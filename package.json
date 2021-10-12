@@ -1,0 +1,8 @@
+{
+    "name": "2D_Game_using_WebGL",
+    "version": "1.0.0",
+    "keywords": ["util", "functional", "server", "client", "browser"],
+    "author": "ilove",
+    "contributors": [],
+    "dependencies": {}
+}
