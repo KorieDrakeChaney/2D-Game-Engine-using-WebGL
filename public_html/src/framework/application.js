@@ -11,6 +11,9 @@ class Application {
         this._canvas.width = window.innerWidth - 40;
         this._canvas.height = window.innerHeight - 40;
 
+        this._canvas.style.border = "5px solid black";
+        this._canvas.style.padding = "1px";
+
         if(this._gl === null){
             alert('Your browser does not support webgl');
         };
