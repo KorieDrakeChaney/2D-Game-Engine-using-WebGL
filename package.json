@@ -1,8 +1,34 @@
 {
-    "name": "2D_Game_using_WebGL",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "ilove",
-    "contributors": [],
-    "dependencies": {}
+  "name": "2d_game_using_webgl",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "ilove",
+  "contributors": [],
+  "dependencies": {
+    "serve": "^12.0.1"
+  },
+  "description": "Game",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KorieDrakeChaney/2D-Game-using-WebGL.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL/issues"
+  },
+  "homepage": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL#readme"
 }
