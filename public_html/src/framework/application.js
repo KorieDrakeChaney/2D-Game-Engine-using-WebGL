@@ -1,3 +1,6 @@
+import { setApplication } from "./globals.js";
+import { setGL } from "./globals.js";
+
 
 class Application {
 
@@ -13,6 +16,9 @@ class Application {
 
         this._canvas.style.border = "5px solid black";
         this._canvas.style.padding = "1px";
+
+        setApplication(this._canvas);
+        setGL(this._gl);
 
         if(this._gl === null){
             alert('Your browser does not support webgl');
