@@ -16,7 +16,7 @@ class Application {
 
         this._canvas.style.border = "5px solid black";
         this._canvas.style.padding = "1px";
-
+        this._gl.viewport(0,0, this._canvas.width, this._canvas.height);
         setApplication(this._canvas);
         setGL(this._gl);
 

@@ -1,9 +1,13 @@
 import { Application } from './framework/application.js'
 import {Renderer} from './gfx/renderer.js';
+import {Shader} from './gfx/shader.js';
 
 
 var app = new Application(document.getElementById('webgl-canvas'));
 app.initialize();
 app.clear();
-var renderer = new Renderer([1, 2, 3], [0, 1, 2], "../res/simpleVS.glsl", "../res/simpleFS.glsl");
+var shader = new Shader("res/shader/simpleVS.glsl", "res/shader/simpleFS.glsl"); 
+shader.initialize();
+var renderer = new Renderer(shader);
 renderer.initialize();
+renderer.draw();
