@@ -1,10 +1,11 @@
 import {VBO as vbo} from './vbo.js';
 import {IBO as ibo} from './ibo.js';
-import * as shader from './shader.js';
+import {Shader as shader} from './shader.js';
 import {currentGL} from '../framework/globals.js';
 
 class Renderer {
     constructor(vertices, indices, VS, FS){
+
         if(!(vertices instanceof Array)){
             console.error("you didn't pass in correct format for : vertices {ARRAY}");
         }
@@ -18,14 +19,13 @@ class Renderer {
             this.indices = indices;
         };
 
-
-        if(typeof VS !== String){
+        if(!(typeof VS === 'string')){
             console.error("you didn't pass in correct format for : VS {STRING}");
         }
         else {
             this.VS = VS;
         };
-        if(typeof FS !== String){
+        if(!(typeof FS === 'string')){
             console.error("you didn't pass in correct format for : FS {STRING}");
         }
         else {
@@ -36,8 +36,9 @@ class Renderer {
     };
 
     initialize(){
-        vbo(currentGL, this.vertices);
-        ibo(currentGL, this.indices);
+        this.VBO = vbo(currentGL, this.vertices);
+        this.IBO = ibo(currentGL, this.indices);
+        shader(this.VS, this.FS);
     };
 
     update() {
