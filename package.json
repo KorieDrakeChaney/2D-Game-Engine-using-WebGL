@@ -15,7 +15,7 @@
     "serve": "^12.0.1"
   },
   "description": "Game",
-  "main": "main.js",
+  "main": "index.html",
   "directories": {
     "test": "test"
   },

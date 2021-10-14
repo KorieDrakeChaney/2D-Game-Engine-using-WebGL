@@ -1,5 +1,6 @@
-import {VBO as vbo} from './vbo.js';
-import {IBO as ibo} from './ibo.js';
+import {VBO as vbo} from './vertex-buffer.js';
+import {IBO as ibo} from './index-buffer.js';
+import {Transform} from './transform.js';
 import {currentGL} from '../framework/globals.js';
 
 class Renderer {
@@ -17,34 +18,55 @@ class Renderer {
         this.VBO = gl.createBuffer();
         this.IBO = gl.createBuffer();
         this.shader = shader;
-        this.program = null;
-
+        this.program = null;    
+        this.transform = new Transform();
+        this.mModelTransform = null;
         this.mVertexPosAttrib = null;
     };
 
     initialize(){
+        
         var gl = currentGL;
         this.program = this.shader.getProgram();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.VBO);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
+        
+        this.IBO = ibo(gl, this.indices);
+        this.VBO = vbo(gl, this.vertices);
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IBO);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW)
-        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+        this.mVertexPosAttrib = gl.getAttribLocation(this.program, "aPos");
+        this.mModelTransform = gl.getUniformLocation(this.program, "uModelTransform");
 
+
+        gl.vertexAttribPointer(this.mVertexPosAttrib, 3, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        this.clean(gl);
 
     };
 
     draw(){
         var gl = currentGL;
+        this.activateShader(gl);
+        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
+        this.clean(gl);
+    };
+
+    activateShader(gl){
         gl.useProgram(this.program);
-        gl.enableVertexAttribArray(0);
+        gl.enableVertexAttribArray(this.mVertexPosAttrib);
+        gl.uniformMatrix4fv(this.mModelTransform, false, this.transform.getModel);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.VBO);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IBO);
-        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     };
+
+    clean(gl){
+
+        gl.useProgram(null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+    };
+
     update() {
 
     };
@@ -64,6 +86,8 @@ class Renderer {
     set setIBO(IBO){
         this.IBO = IBO;
     };
+
+    get getTransform() { return this.transform; };
 };
 
 export {Renderer};
