@@ -1,36 +1,29 @@
 {
   "name": "2d_game_using_webgl",
   "version": "1.0.0",
-  "keywords": [
-    "util",
-    "functional",
-    "server",
-    "client",
-    "browser"
-  ],
-  "author": "ilove",
-  "contributors": [],
-  "dependencies": {
-    "fs": "0.0.1-security",
-    "serve": "^12.0.1",
-    "typescript": "^4.4.4"
-  },
   "description": "Game",
-  "main": "index.html",
-  "directories": {
-    "test": "test"
-  },
-  "devDependencies": {},
+  "main": "main.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KorieDrakeChaney/2D-Game-using-WebGL.git"
   },
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL/issues"
   },
-  "homepage": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL#readme"
+  "homepage": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL#readme",
+  "devDependencies": {
+    "stlint": "^1.0.65",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "tsc": "^2.0.3",
+    "webpack": "^5.58.2",
+    "webpack-cli": "^4.9.0"
+  }
 }
