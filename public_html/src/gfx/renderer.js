@@ -2,6 +2,9 @@ import {VBO as vbo} from './vertex-buffer.js';
 import {IBO as ibo} from './index-buffer.js';
 import {Transform} from './transform.js';
 import {currentGL} from '../framework/globals.js';
+import {Camera} from './camera.js';
+import {currentApplication} from '../framework/globals.js';
+import * as vec2 from '../math/vec2.js';
 
 class Renderer {
     constructor(shader){
@@ -12,16 +15,25 @@ class Renderer {
                         -0.5, 0.5, 0.0,
                         0.5, -0.5, 0.0,
                         -0.5, -0.5, 0.0
-                    ];
+        ];
         this.indices = [0, 1, 2, 2, 1, 3];
 
         this.VBO = gl.createBuffer();
         this.IBO = gl.createBuffer();
+
         this.shader = shader;
         this.program = null;    
         this.transform = new Transform();
+        this.camera = new Camera(
+            vec2.fromValues(20, 60), 
+            20, 
+            [0, 0 , currentApplication.width, currentApplication.height]
+        );
+
         this.mModelTransform = null;
         this.mVertexPosAttrib = null;
+        this.mViewProjTransform = null;
+        
     };
 
     initialize(){
@@ -34,7 +46,9 @@ class Renderer {
 
         this.mVertexPosAttrib = gl.getAttribLocation(this.program, "aPos");
         this.mModelTransform = gl.getUniformLocation(this.program, "uModelTransform");
+        this.mViewProjTransform = gl.getUniformLocation(this.program, "uViewProjTransform");
 
+        this.camera.initialize();
 
         gl.vertexAttribPointer(this.mVertexPosAttrib, 3, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -55,6 +69,7 @@ class Renderer {
         gl.useProgram(this.program);
         gl.enableVertexAttribArray(this.mVertexPosAttrib);
         gl.uniformMatrix4fv(this.mModelTransform, false, this.transform.getModel);
+        gl.uniformMatrix4fv(this.mViewProjTransform, false, this.camera.getVPMatrix);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.VBO);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IBO);
     };
