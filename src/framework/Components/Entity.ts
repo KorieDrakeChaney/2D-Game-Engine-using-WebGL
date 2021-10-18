@@ -18,5 +18,14 @@ export default class Entity {
     public addComponent(component : Component){
         this.components.push(component);
         component.entity = this;
+    }; 
+ 
+    public findComponent(T : Component):Component{
+        this.components.forEach(Component => {
+            if (typeof Component === typeof T){
+                return Component;
+            } ;
+        });
+        return null;
     };
-}
+};

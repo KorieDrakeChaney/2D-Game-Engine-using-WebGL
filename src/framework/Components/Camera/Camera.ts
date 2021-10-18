@@ -1,7 +1,7 @@
-import mat4 from '../math/mat4.js';
-import {currentGL} from '../framework/globals';
-import Component from './Component';
-import vec3 from '../math/vec3';
+import mat4 from '../../../math/mat4.js';
+import {getApplication} from '../../globals';
+import Component from '../Component';
+import vec3 from '../../../math/vec3';
 
 export default class Camera extends Component{
 
@@ -31,7 +31,7 @@ export default class Camera extends Component{
     };
 
     initialize(){
-        var gl = currentGL;
+        var gl = getApplication().gl;
 
         gl.viewport(
             this.mViewport[0],

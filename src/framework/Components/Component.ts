@@ -15,6 +15,6 @@ export default class Component {
 
     public entity : Entity;
 
-    protected Update?():void;
+    public Update?():void;
 }
 

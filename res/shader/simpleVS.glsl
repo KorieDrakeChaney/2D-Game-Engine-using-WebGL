@@ -9,6 +9,6 @@ uniform mat4 uViewProjTransform;
 out vec4 vertexColor;
 
 void main(void){
-    gl_Position = uViewProjTransform * uModelTransform * vec4(aPos, 1.0);
+    gl_Position =  vec4(aPos, 1.0);
     vertexColor = vec4(aPos, 1);
 }
