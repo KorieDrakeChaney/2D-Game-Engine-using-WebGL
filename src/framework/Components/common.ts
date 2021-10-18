@@ -1,6 +1,6 @@
-import Component from './Component';
-import Transform from './Transform/Transform'
-import Entity from './Entity'
+import Component from './Component.js';
+import Transform from './Transform/Transform.js'
+import Entity from './Entity.js'
 
 export {Component, Transform, Entity}
 

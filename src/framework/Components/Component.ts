@@ -1,5 +1,5 @@
-import vec2 from '../../math/vec2';
-import Entity from './Entity';
+import vec2 from '../../math/vec2.js';
+import Entity from './Entity.js';
 
 /**
  * @class
