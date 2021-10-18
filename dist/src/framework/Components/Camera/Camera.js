@@ -13,10 +13,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import mat4 from '../math/mat4.js';
-import { currentGL } from '../framework/globals';
-import Component from './Component';
-import vec3 from '../math/vec3';
+import mat4 from '../../../math/mat4.js';
+import { getApplication } from '../../globals';
+import Component from '../Component';
+import vec3 from '../../../math/vec3';
 var Camera = (function (_super) {
     __extends(Camera, _super);
     function Camera(center, width, viewportArray) {
@@ -37,7 +37,7 @@ var Camera = (function (_super) {
     }
     ;
     Camera.prototype.initialize = function () {
-        var gl = currentGL;
+        var gl = getApplication().gl;
         gl.viewport(this.mViewport[0], this.mViewport[1], this.mViewport[2], this.mViewport[3]);
         gl.scissor(this.mViewport[0], this.mViewport[1], this.mViewport[2], this.mViewport[3]);
         gl.clearColor(this.mBgColor[0], this.mBgColor[1], this.mBgColor[2], this.mBgColor[3]);

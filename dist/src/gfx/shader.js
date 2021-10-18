@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { currentGL } from "../framework/globals";
+import { getApplication } from "../framework/globals";
 export default function Shader(program, vs, fs) {
     return __awaiter(this, void 0, void 0, function () {
         var fragmentShaderFile, gl, vertexShader, fragmentShader;
@@ -44,7 +44,7 @@ export default function Shader(program, vs, fs) {
                 case 0:
                     fragmentShaderFile = fs;
                     this.program = program;
-                    gl = currentGL;
+                    gl = getApplication().gl;
                     vertexShader = null;
                     fragmentShader = null;
                     return [4, fetch(vs)
@@ -78,7 +78,7 @@ export default function Shader(program, vs, fs) {
                             ;
                         })
                             .then(function () {
-                            var gl = currentGL;
+                            var gl = getApplication().gl;
                             _this.program = gl.createProgram();
                             gl.attachShader(_this.program, vertexShader);
                             gl.attachShader(_this.program, fragmentShader);

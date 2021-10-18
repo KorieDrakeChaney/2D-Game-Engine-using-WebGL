@@ -1,6 +1,6 @@
 import Application from "./framework/application";
 import Shader from "./gfx/shader";
-import Renderer from "./Components/Renderer/Renderer";
+import Renderer from "./framework/Components/Renderer/Renderer";
 
 let main = (async function(){
     let app = new Application(document.getElementById('canvas-webgl'));

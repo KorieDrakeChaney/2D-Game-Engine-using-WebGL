@@ -13,8 +13,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import vec2 from '../math/vec2';
-import Component from './Component';
+import vec2 from '../../../math/vec2';
+import Component from '../Component';
 var Transform = (function (_super) {
     __extends(Transform, _super);
     function Transform(position, scale, rotation) {

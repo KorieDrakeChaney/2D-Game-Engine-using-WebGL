@@ -8,7 +8,18 @@ var Entity = (function () {
         component.entity = this;
     };
     ;
+    Entity.prototype.findComponent = function (T) {
+        this.components.forEach(function (Component) {
+            if (typeof Component === typeof T) {
+                return Component;
+            }
+            ;
+        });
+        return null;
+    };
+    ;
     return Entity;
 }());
 export default Entity;
+;
 //# sourceMappingURL=Entity.js.map

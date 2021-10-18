@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import Application from "./framework/application";
-import Renderer from "./Components/Renderer";
+import Renderer from "./framework/Components/Renderer/Renderer";
 var main = (function () {
     return __awaiter(this, void 0, void 0, function () {
         var app, renderer;
@@ -44,8 +44,6 @@ var main = (function () {
             app.initialize();
             app.clear();
             renderer = new Renderer();
-            renderer.initialize();
-            renderer.draw();
             return [2];
         });
     });

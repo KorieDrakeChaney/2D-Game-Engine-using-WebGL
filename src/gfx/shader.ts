@@ -1,4 +1,4 @@
-import {currentGL} from "../framework/globals"
+import {getApplication} from "../framework/globals"
 /**
  * @function
  * @name Shader
@@ -17,7 +17,7 @@ import {currentGL} from "../framework/globals"
 export default async function Shader(program : any,vs : string, fs : string) { 
     let fragmentShaderFile = fs;
     this.program = program;
-    let gl = currentGL;
+    let gl = getApplication().gl;
     let vertexShader = null;
     let fragmentShader = null;
 
@@ -48,7 +48,7 @@ export default async function Shader(program : any,vs : string, fs : string) {
         };
     })
     .then(() => {
-        let gl = currentGL;
+        let gl = getApplication().gl;
 
         this.program = gl.createProgram();
         gl.attachShader(this.program, vertexShader);
