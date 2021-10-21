@@ -5,15 +5,12 @@
  * @description When resizing the window the size of the canvas will not change.
  */
 
-export const FILLMODE_NONE : string = 'NONE';
 /**
  * @constant
  * @type {string}
  * @name FILLMODE_FILL_WINDOW
  * @description When resizing the window the size of the canvas will fill the window exactly.
  */
-
-export const FILLMODE_FILL_WINDOW : string = 'FILL_WINDOW';
 
 /**
  * @constant
@@ -23,8 +20,6 @@ export const FILLMODE_FILL_WINDOW : string = 'FILL_WINDOW';
  *              window as best it can,while maintaing the same aspect ratio.
  */
 
- export const FILLMODE_KEEP_ASPECT : string = 'KEEP_ASPECT';
-
 
  /**
  * @constant
@@ -33,13 +28,18 @@ export const FILLMODE_FILL_WINDOW : string = 'FILL_WINDOW';
  * @description When resizing the window the size of the canvas will fill change to match the size of the canvas
  */
 
-export const RESOLUTION_AUTO : string = 'AUTO';
-
  /**
  * @constant
  * @type {string}
  * @name RESOLUTION_FIXED
- * @description When resizing the window the size of the canvas will fill change to match the size of the canvas
+ * @descriptionWhen the canvas is resized the resolution of the canvas will remain at the same value 
+ *                  and the output will just be scaled to fit the canvas.
  */
 
-export const RESOLUTION_FIXED : string = 'FIXED';
+export const enum FILLMODE {
+    NONE = 'NONE',
+    FILL_WINDOW = 'FILL_WINDOW', 
+    KEEP_ASPECT = 'KEEP_ASPECT',
+    RESOLUTION_AUTO = 'RESOLUTION_AUTO', 
+    RESOLUTION_FIXED = 'RESOLUTION_FIXED'
+}

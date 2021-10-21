@@ -1,8 +1,7 @@
 import { setApplication } from "./globals.js";
 
 import {
-    FILLMODE_FILL_WINDOW, FILLMODE_KEEP_ASPECT,
-    RESOLUTION_AUTO, RESOLUTION_FIXED
+    FILLMODE
 } from './constants.js';
 
 
@@ -28,8 +27,6 @@ export default class Application {
     public app : any;
     public gl : any;
 
-
-
     private time : number = 0;
     private timeScale : number = 1;
     private maxDeltaTime : number = 0.1;
@@ -38,6 +35,8 @@ export default class Application {
 
     private autoRender : boolean = true;
     private renderNextFrame : boolean = false;
+    
+    private fillModeType : FILLMODE = FILLMODE.RESOLUTION_AUTO;
     
     constructor(app : any){
         this.app = app;
@@ -52,9 +51,6 @@ export default class Application {
         this.app.width = window.innerWidth - 40;
         this.app.height = window.innerHeight - 40;
 
-        this.app.style.border = "5px solid black";
-        this.app.style.padding = "1px";
-
         try {
             this.gl.viewport(0, 0, this.app.width, this.app.height);
         }
@@ -67,11 +63,54 @@ export default class Application {
         if(this.gl === null){
             alert('Your browser does not support webgl');
         };
+
+        this.resizeCanvas(this.fillModeType);
+    };
+
+
+    set setFillType(newFill : FILLMODE){
+        this.fillModeType = newFill;
     };
 
     public clear():void{ 
         this.gl.clearColor(0, 0, 0, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT || this.gl.DEPTH_BUFFER_BIT);
     };
+
+    public resizeCanvas(fillmode : any):void{
+        switch(fillmode){
+            case FILLMODE.NONE:
+                this.app.width = window.innerWidth - 40;
+                this.app.height = window.innerHeight - 40;
+                break;
+            case FILLMODE.RESOLUTION_AUTO:
+                window.addEventListener('resize', () => {
+                    this.app.width = window.innerWidth - 40;
+                    this.app.height = window.innerHeight - 40;
+                });
+                break;
+            case FILLMODE.RESOLUTION_FIXED:
+                window.addEventListener('resize', () => {
+                    this.app.width = 400;
+                    this.app.width = 300;
+                });
+                break;
+            case FILLMODE.FILL_WINDOW:
+                window.addEventListener('resize', () => {
+                    this.app.width = window.innerWidth - 40;
+                    this.app.height = window.innerHeight - 40;
+                });
+                break;
+            case FILLMODE.KEEP_ASPECT:
+                window.addEventListener('resize', () => {
+                    this.app.width = window.innerWidth - 40;
+                    this.app.height = window.innerWidth / 3;
+                });
+                break;
+            default :
+                console.log('day');
+                break;
+        };
+    }
 
 };
