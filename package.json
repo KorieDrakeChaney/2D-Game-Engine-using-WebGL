@@ -17,8 +17,7 @@
   },
   "homepage": "https://github.com/KorieDrakeChaney/2D-Game-using-WebGL#readme",
   "devDependencies": {
-    "stlint": "^1.0.65",
-    "ts-loader": "^9.2.6",
+    "ts-loader": "^9.2.6", 
     "typescript": "^4.4.4"
   },
   "dependencies": {

@@ -3,12 +3,11 @@
 
 layout (location = 0) in vec3 aPos;
 
-uniform mat4 uModelTransform;
-uniform mat4 uViewProjTransform;
 
+in uniform mat4 uProjMatrix;
 out vec4 vertexColor;
 
 void main(void){
-    gl_Position =  vec4(aPos, 1.0);
-    vertexColor = vec4(aPos, 1);
+    gl_Position =  uProjMatrix * vec4(aPos, 1.0);
+    vertexColor = vec4(1, 1, 1, 1);
 }

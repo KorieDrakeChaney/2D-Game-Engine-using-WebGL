@@ -35,13 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import Application from "./framework/application.js";
+import { quadBatch } from "./framework/Components/Renderer/Renderer.js";
 var main = (function () {
     return __awaiter(this, void 0, void 0, function () {
-        var app;
+        var app, renderer;
         return __generator(this, function (_a) {
             app = new Application(document.getElementById('canvas-webgl'));
             app.initialize();
             app.clear();
+            renderer = new quadBatch();
+            renderer.initialize();
+            renderer.render();
             return [2];
         });
     });
