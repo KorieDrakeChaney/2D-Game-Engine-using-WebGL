@@ -1,20 +1,4 @@
 import { setApplication } from "./globals.js";
-var Progress = (function () {
-    function Progress(length) {
-        this.count = 0;
-        this.length = length;
-    }
-    ;
-    Progress.prototype.inc = function () {
-        this.count++;
-    };
-    ;
-    Progress.prototype.done = function () {
-        return (this.count === this.length);
-    };
-    ;
-    return Progress;
-}());
 var Application = (function () {
     function Application(app) {
         this.time = 0;
@@ -29,8 +13,8 @@ var Application = (function () {
     ;
     Application.prototype.initialize = function () {
         this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
-        this.app.width = window.innerWidth - 40;
-        this.app.height = window.innerHeight - 40;
+        this.app.style.border = "1px solid pink";
+        this.resizeCanvasToDisplaySize();
         try {
             this.gl.viewport(0, 0, this.app.width, this.app.height);
         }
@@ -43,7 +27,6 @@ var Application = (function () {
             alert('Your browser does not support webgl');
         }
         ;
-        this.resizeCanvas("RESOLUTION_AUTO");
     };
     ;
     Application.prototype.clear = function () {
@@ -51,43 +34,19 @@ var Application = (function () {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT || this.gl.DEPTH_BUFFER_BIT);
     };
     ;
-    Application.prototype.resizeCanvas = function (fillmode) {
-        var _this = this;
-        switch (fillmode) {
-            case "NONE":
-                this.app.width = window.innerWidth - 40;
-                this.app.height = window.innerHeight - 40;
-                break;
-            case "RESOLUTION_AUTO":
-                window.addEventListener('resize', function () {
-                    _this.app.width = window.innerWidth - 40;
-                    _this.app.height = window.innerHeight - 40;
-                });
-                break;
-            case "RESOLUTION_FIXED":
-                window.addEventListener('resize', function () {
-                    _this.app.width = 400;
-                    _this.app.width = 300;
-                });
-                break;
-            case "FILL_WINDOW":
-                window.addEventListener('resize', function () {
-                    _this.app.width = window.innerWidth - 40;
-                    _this.app.height = window.innerHeight - 40;
-                });
-                break;
-            case "KEEP_ASPECT":
-                window.addEventListener('resize', function () {
-                    _this.app.width = window.innerWidth - 40;
-                    _this.app.height = window.innerWidth / 3;
-                });
-                break;
-            default:
-                console.log('day');
-                break;
+    Application.prototype.resizeCanvasToDisplaySize = function () {
+        var dpr = window.devicePixelRatio;
+        var width = window.innerWidth - 40;
+        var height = window.innerHeight - 30;
+        var needResize = this.app.width !== width ||
+            this.app.height !== height;
+        if (needResize) {
+            this.app.width = width;
+            this.app.height = height;
         }
         ;
     };
+    ;
     return Application;
 }());
 export default Application;

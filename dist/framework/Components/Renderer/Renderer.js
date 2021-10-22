@@ -1,14 +1,6 @@
 import { getApplication } from '../../globals.js';
 import vec2 from '../../../math/vec2.js';
 import vec4 from '../../../math/vec4.js';
-var Vertex = (function () {
-    function Vertex(position, color) {
-        this.Position = position;
-        this.Color = color;
-    }
-    return Vertex;
-}());
-;
 var quadData = (function () {
     function quadData() {
         this.vao = 0;
@@ -93,7 +85,6 @@ var Renderer2D = (function () {
         if (position === void 0) { position = new vec2([1, 1]); }
         if (size === void 0) { size = new vec2([1, 1]); }
         if (color === void 0) { color = new vec4([1, 1, 1, 1]); }
-        var vertex = new Vertex(position, color);
     };
     Renderer2D.quadBatch = new QuadBatch();
     return Renderer2D;

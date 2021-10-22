@@ -3,22 +3,6 @@ import vec2 from '../../../math/vec2.js';
 import vec4 from '../../../math/vec4.js';
 
 
-
-
-
-
-
-class Vertex {
-    public Position : vec2;
-    public Color : vec4;
-
-    constructor(position : vec2, color : vec4) {
-        this.Position = position;
-        this.Color = color;
-    }
-};
-
-
 class quadData{
     public vao : number = 0;
     public vbo : number = 0;
@@ -116,7 +100,6 @@ export default class Renderer2D {
                     size : vec2 = new vec2([1, 1]), 
                     color : vec4 = new vec4([1, 1, 1, 1]), 
                     textureID : number):void{
-        let vertex = new Vertex(position, color);
     }
 
 }
