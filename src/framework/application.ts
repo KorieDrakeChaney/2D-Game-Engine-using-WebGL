@@ -1,5 +1,5 @@
 import { setApplication } from "./globals.js";
-
+import GraphicsDevice from "../gfx/graphics_device.js";
 
 
 
@@ -8,6 +8,7 @@ export default class Application {
 
     public app : any;
     public gl : any;
+    public graphicsDevice : GraphicsDevice;
 
     private time : number = 0;
     private timeScale : number = 1;
@@ -18,18 +19,15 @@ export default class Application {
     private autoRender : boolean = true;
     private renderNextFrame : boolean = false;
     
-    
+
     constructor(app : any){
         this.app = app;
-        this.gl = null;
-
-
+        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
+        this.graphicsDevice = new GraphicsDevice(this);
     };
 
     public initialize():void{ 
 
-
-        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
         this.app.style.border = "1px solid pink";
         this.resizeCanvasToDisplaySize();
 
@@ -46,6 +44,7 @@ export default class Application {
             alert('Your browser does not support webgl');
         };
 
+        this.graphicsDevice.initalize();
     };
 
 

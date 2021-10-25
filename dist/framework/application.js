@@ -1,4 +1,5 @@
 import { setApplication } from "./globals.js";
+import GraphicsDevice from "../gfx/graphics_device.js";
 var Application = (function () {
     function Application(app) {
         this.time = 0;
@@ -8,11 +9,11 @@ var Application = (function () {
         this.autoRender = true;
         this.renderNextFrame = false;
         this.app = app;
-        this.gl = null;
+        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
+        this.graphicsDevice = new GraphicsDevice(this);
     }
     ;
     Application.prototype.initialize = function () {
-        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
         this.app.style.border = "1px solid pink";
         this.resizeCanvasToDisplaySize();
         try {

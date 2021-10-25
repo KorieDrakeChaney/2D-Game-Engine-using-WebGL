@@ -1,6 +1,7 @@
 import { getApplication } from '../../globals.js';
 import vec2 from '../../../math/vec2.js';
 import vec4 from '../../../math/vec4.js';
+var gl = getApplication().gl;
 var quadData = (function () {
     function quadData() {
         this.vao = 0;
@@ -16,10 +17,9 @@ var QuadBatch = (function () {
         this.maxVertexCount = this.maxQuadCount * 4 * 4;
         this.maxIndexCount = this.maxQuadCount * 6;
         this.maxTextureCount = 16;
-        this._gl = getApplication().gl;
-        this._vao = this._gl.createVertexArray();
-        this._vbo = this._gl.createBuffer();
-        this._ibo = this._gl.createBuffer();
+        this._vao = gl.createVertexArray();
+        this._vbo = gl.createBuffer();
+        this._ibo = gl.createBuffer();
         this._program = getProgram();
         this.vertices = new Float32Array(this.maxVertexCount);
         this.indices = new Uint32Array(this.maxIndexCount);
@@ -32,22 +32,22 @@ var QuadBatch = (function () {
         }
     };
     QuadBatch.prototype.flush = function () {
-        this._gl.bindVertexArray(this._vao);
-        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._vbo);
-        this._gl.bufferData(this._gl.ARRAY_BUFFER, this.vertices, null, this._gl.DYNAMIC_DRAW);
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._vbo);
-        this._gl.bufferData(this._gl.ELEMENT_ARRAY_BUFFER, this.indices, this._gl.DYNAMIC_DRAW);
-        this._gl.drawElements(this._gl.TRIANGLES, this.indices.length, this._gl.UNSIGNED_SHORT, 0);
+        gl.bindVertexArray(this._vao);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._vbo);
+        gl.bufferData(gl.ARRAY_BUFFER, this.vertices, null, gl.DYNAMIC_DRAW);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._vbo);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices, gl.DYNAMIC_DRAW);
+        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
     };
     ;
     QuadBatch.prototype.startBatch = function () {
     };
     ;
     QuadBatch.prototype.endBatch = function () {
-        this._gl.useProgram(null);
-        this._gl.bindVertexArray(null);
-        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null);
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null);
+        gl.useProgram(null);
+        gl.bindVertexArray(null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
     };
     ;
     QuadBatch.prototype.initialize = function () {
@@ -57,39 +57,32 @@ var QuadBatch = (function () {
             0.5, -0.5, 0.0];
         var indices = [0, 1, 2, 2, 3, 0];
         this._program = getProgram();
-        this._gl.bindVertexArray(this._vao);
-        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._vbo);
-        this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(vertices), this._gl.STATIC_DRAW);
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._ibo);
-        this._gl.bufferData(this._gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this._gl.STATIC_DRAW);
-        this._gl.vertexAttribPointer(0, 3, this._gl.FLOAT, false, 0, 0);
+        gl.bindVertexArray(this._vao);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._vbo);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
     };
     ;
     QuadBatch.prototype.render = function () {
-        this._gl.enableVertexAttribArray(0);
-        this._gl.useProgram(this._program);
-        this._gl.bindVertexArray(this._vao);
-        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._vbo);
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._ibo);
-        this._gl.drawElements(this._gl.TRIANGLES, 6, this._gl.UNSIGNED_SHORT, 0);
+        gl.enableVertexAttribArray(0);
+        gl.useProgram(this._program);
+        gl.bindVertexArray(this._vao);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._vbo);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._ibo);
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
     };
     ;
     return QuadBatch;
 }());
+export { QuadBatch };
 ;
-var Renderer2D = (function () {
-    function Renderer2D() {
-    }
-    ;
-    Renderer2D.DrawQuad = function (position, size, color, textureID) {
-        if (position === void 0) { position = new vec2([1, 1]); }
-        if (size === void 0) { size = new vec2([1, 1]); }
-        if (color === void 0) { color = new vec4([1, 1, 1, 1]); }
-    };
-    Renderer2D.quadBatch = new QuadBatch();
-    return Renderer2D;
-}());
-export default Renderer2D;
+var DrawQuad = function (position, size, color, textureID) {
+    if (position === void 0) { position = new vec2([1, 1]); }
+    if (size === void 0) { size = new vec2([1, 1]); }
+    if (color === void 0) { color = new vec4([1, 1, 1, 1]); }
+};
 var getProgram = function () {
     var gl = getApplication().gl;
     var vertexShader = getShader("../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);

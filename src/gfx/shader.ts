@@ -1,4 +1,6 @@
-import {getApplication} from "../framework/globals"
+import {getApplication} from "../framework/globals";
+import GraphicsDevice from './GraphicsDevice.js';
+
 /**
  * @function
  * @name Shader
@@ -14,57 +16,73 @@ import {getApplication} from "../framework/globals"
  *
  */
 
-export default async function Shader(program : any,vs : string, fs : string) { 
-    let fragmentShaderFile = fs;
-    this.program = program;
-    let gl = getApplication().gl;
-    let vertexShader = null;
-    let fragmentShader = null;
 
-    await fetch(vs)
-    .then(res => res.text())
-    .then(data => {
-        let vsShaderInfo = data;
-        console.log(vsShaderInfo);
-        vertexShader = gl.createShader(gl.VERTEX_SHADER);
-        gl.shaderSource(vertexShader, vsShaderInfo);
-        gl.compileShader(vertexShader);
-        let success = gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS);
-        if(!success){
-            console.error("vertex::shader::compile::error");
-        };
-    });
-    await fetch(fs)
-    .then(res => res.text())
-    .then(data => {
-        let fsShaderInfo = data;
-        console.log(fsShaderInfo);
-        fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-        gl.shaderSource(fragmentShader, fsShaderInfo);
-        gl.compileShader(fragmentShader);
-        let success = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
-        if(!success){
-            console.error("fragment::shader::compile::error");
-        };
-    })
-    .then(() => {
-        let gl = getApplication().gl;
+export default class Shader { 
 
-        this.program = gl.createProgram();
-        gl.attachShader(this.program, vertexShader);
-        gl.attachShader(this.program, fragmentShader);
-    
-        gl.linkProgram(this.program);
-    
-        if (! gl.getProgramParameter(this.program, gl.LINK_STATUS)){
-            let info = gl.getProgramInfoLog(this.program);
-            throw 'Could not compile WebGL program. \n\n' + info;
-        };
+    public attributes : Array<any>;
+    public uniforms : Array<any>;
+    public samplers : Array<any>;
 
-        program = this.program;
-    });
+    private ready : boolean = false;
+    private failed : boolean = false;
+
+    private defintion : object = { 
+        attributes : 0, 
+        uniforms : 0, 
+        samplers : 0
+    }; 
+
+
+    constructor(graphicsDevice : GraphicsDevice, definition : Object){
+
+        this.init();
+
+
+        graphicsDevice.createShader(this);
+
+
+    };
+
+    init(){
+        this.attributes = [];
+        this.uniforms = [];
+        this.samplers = [];
+
+        this.ready = false;
+        this.failed = false;
+    }
 
 };
+let getProgram = function(){
+    let gl = getApplication().gl;
+    let vertexShader = this.getShader("../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);
+    let fragmentShader = this.getShader("../../../../res/shader/simpleFS.glsl", gl.FRAGMENT_SHADER);
+
+    let program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+
+    return program;
+};
+
+let getShader = function(file : string, shaderType : any){
+    let gl = getApplication().gl;
+
+    let xttp = new XMLHttpRequest();
+    xttp.open("GET", file, false);
+    try {
+        xttp.send();
+    }catch(err){
+        alert("Failed to load shader: " + file);
+        return null;
+    };
+
+    let shaderSource = xttp.responseText;
+    let shader = gl.createShader(shaderType);
+    gl.shaderSource(shader, shaderSource);
+    gl.compileShader(shader);
 
 
-
+    return shader;
+};

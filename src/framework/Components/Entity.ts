@@ -6,7 +6,6 @@ import Component from './Component.js';
  * @description Entity are any given "thing" in the scene.
  */
 
-
 export default class Entity {
 
     public components : Array<Component>
