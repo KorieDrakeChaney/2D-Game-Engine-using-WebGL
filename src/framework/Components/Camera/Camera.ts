@@ -31,7 +31,7 @@ export default class Camera extends Component{
     };
 
     initialize(){
-        var gl = getApplication().gl;
+        let gl = getApplication().getGL();
 
         gl.viewport(
             this.mViewport[0],

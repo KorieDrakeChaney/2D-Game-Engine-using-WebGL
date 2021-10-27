@@ -1,11 +1,9 @@
-var currentApplication = null;
-function getApplication() {
-    return currentApplication;
-}
-;
-function setApplication(app) {
-    currentApplication = app;
-}
-;
+var Application = null;
+var getApplication = function () {
+    return Application;
+};
+var setApplication = function (app) {
+    Application = app;
+};
 export { getApplication, setApplication };
 //# sourceMappingURL=globals.js.map

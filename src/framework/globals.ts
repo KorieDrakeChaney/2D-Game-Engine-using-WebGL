@@ -1,13 +1,13 @@
-import Application from "./application.js"
+let Application : any = null;
 
-let currentApplication : any = null;
 
-function getApplication() {
-    return currentApplication;
+let getApplication = function(){
+    return Application;
 };
 
-function setApplication(app : Application){
-    currentApplication = app;
+
+let setApplication = function(app : any){
+    Application = app;
 };
 
-export {getApplication, setApplication}
+export {getApplication, setApplication};

@@ -37,7 +37,7 @@ var Camera = (function (_super) {
     }
     ;
     Camera.prototype.initialize = function () {
-        var gl = getApplication().gl;
+        var gl = getApplication().getGL();
         gl.viewport(this.mViewport[0], this.mViewport[1], this.mViewport[2], this.mViewport[3]);
         gl.scissor(this.mViewport[0], this.mViewport[1], this.mViewport[2], this.mViewport[3]);
         gl.clearColor(this.mBgColor[0], this.mBgColor[1], this.mBgColor[2], this.mBgColor[3]);

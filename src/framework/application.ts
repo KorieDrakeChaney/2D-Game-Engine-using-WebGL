@@ -1,33 +1,32 @@
 import { setApplication } from "./globals.js";
-import GraphicsDevice from "../gfx/graphics_device.js";
-
+import GraphicsDevice from "../gfx/GraphicsDevice.js";
 
 
 
 export default class Application {
-
-    public app : any;
-    public gl : any;
-    public graphicsDevice : GraphicsDevice;
-
-    private time : number = 0;
-    private timeScale : number = 1;
-    private maxDeltaTime : number = 0.1;
-
-    private frame : number = 0;
-
-    private autoRender : boolean = true;
-    private renderNextFrame : boolean = false;
     
+    private app : any = null;
+    private gl : any = null;
+    
+    private GraphicsDevice : GraphicsDevice = null;
+    private time : number = 0;
+    private timeScale : number  = 1;
+    private maxDeltaTime : number  = 0.1;
+    
+    private frame : number = 0;
+    
+    private autoRender  : boolean = true;
+    private renderNextFrame  : boolean = false;
 
     constructor(app : any){
         this.app = app;
-        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
-        this.graphicsDevice = new GraphicsDevice(this);
     };
 
-    public initialize():void{ 
 
+    initialize = function():void{ 
+
+        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
+        this.GraphicsDevice = new GraphicsDevice(this);
         this.app.style.border = "1px solid pink";
         this.resizeCanvasToDisplaySize();
 
@@ -38,22 +37,26 @@ export default class Application {
             console.error(err);
         };
 
-        setApplication(this);
-
         if(this.gl === null){
             alert('Your browser does not support webgl');
         };
-
-        this.graphicsDevice.initalize();
+        setApplication(this);
     };
 
+    update = function():void{
+        this.draw();
+    };
 
-    public clear():void{ 
+    draw = function():void{
+        this.GraphicsDevice.initalize();
+    }
+
+    clear = function():void{ 
         this.gl.clearColor(0, 0, 0, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT || this.gl.DEPTH_BUFFER_BIT);
     };
 
-    public resizeCanvasToDisplaySize(){
+    resizeCanvasToDisplaySize = function(){
 
         const dpr = window.devicePixelRatio;
         let width = window.innerWidth - 40;        
@@ -67,5 +70,14 @@ export default class Application {
         };
     };
     
+
+    getGL = function(){
+        return this.gl;
+    };
+
+    getGraphicsDevice = function():GraphicsDevice{
+        return this.GraphicsDevice;
+    };
+
 
 };

@@ -1,4 +1,4 @@
-import {getApplication} from "../framework/globals";
+import { getApplication } from '../framework/globals.js';
 import GraphicsDevice from './GraphicsDevice.js';
 
 /**
@@ -38,8 +38,6 @@ export default class Shader {
         this.init();
 
 
-        graphicsDevice.createShader(this);
-
 
     };
 
@@ -53,10 +51,12 @@ export default class Shader {
     }
 
 };
-let getProgram = function(){
-    let gl = getApplication().gl;
-    let vertexShader = this.getShader("../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);
-    let fragmentShader = this.getShader("../../../../res/shader/simpleFS.glsl", gl.FRAGMENT_SHADER);
+
+
+export let getProgram = function(gl : any){
+    
+    let vertexShader = this.getShader(gl, "../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);
+    let fragmentShader = this.getShader(gl, "../../../../res/shader/simpleFS.glsl", gl.FRAGMENT_SHADER);
 
     let program = gl.createProgram();
     gl.attachShader(program, vertexShader);
@@ -66,8 +66,7 @@ let getProgram = function(){
     return program;
 };
 
-let getShader = function(file : string, shaderType : any){
-    let gl = getApplication().gl;
+export let getShader = function(gl : any, file : string, shaderType : any){
 
     let xttp = new XMLHttpRequest();
     xttp.open("GET", file, false);

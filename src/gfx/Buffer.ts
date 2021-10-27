@@ -1,4 +1,3 @@
-import {getApplication} from '../framework/globals.js';
 import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,
         FLOAT, FLOAT2, FLOAT3, FLOAT4, 
         INT, INT2, INT3, INT4, 
@@ -14,23 +13,24 @@ import GraphicsDevice from './GraphicsDevice.js';
      */
 
 
-let id = 0;
-let gl = getApplication().gl;
- 
+var id = 0;
 
 export class VertexBuffer { 
 
-    private data : ArrayBuffer; 
-    private id : number;
+    private data : ArrayBuffer = null; 
+    private id : number = 0;
     private numBytes : number;
     private storage : Float32Array;
     private usage : number;
+    private gl : any;
 
-    constructor(graphicsDevice : GraphicsDevice, vertices : Float32Array, usage : number = BUFFER_STATIC){
+    constructor(gl : any, graphicsDevice : GraphicsDevice, vertices : Float32Array, usage : number = BUFFER_STATIC){
         this.id = id++;
         this.usage = usage;
         this.storage = vertices;
+        this.gl = gl;
         graphicsDevice.addVBuffer(this);
+
     };
 
     setData(d : typeof this.data):boolean{
@@ -41,34 +41,45 @@ export class VertexBuffer {
         return false;
     };
 
+    get getStorage(){
+        return this.storage;
+    }
     bind():void{
+
         if(!this.data){
-            this.data = gl.createBuffer();
+            this.data = this.gl.createBuffer();
         };
         
         let glUsage : any;
 
         switch (this.usage) {
             case BUFFER_STATIC:
-                glUsage = gl.STATIC_DRAW;
+                glUsage = this.gl.STATIC_DRAW;
                 break;
             case BUFFER_DYNAMIC:
-                glUsage = gl.DYNAMIC_DRAW;
+                glUsage = this.gl.DYNAMIC_DRAW;
                 break;
             case BUFFER_STREAM:
-                glUsage = gl.STREAM_DRAW;
+                glUsage = this.gl.STREAM_DRAW;
                 break;
             case BUFFER_GPUDYNAMIC:
-                glUsage = gl.DYNAMIC_COPY;
+                glUsage = this.gl.DYNAMIC_COPY;
                 break;
-        }
-        gl.bindBuffer(gl.VERTEX_ARRAY, this.data);
-        gl.bufferData(gl.VERTEX_ARRAY, this.storage, null, glUsage);
+        };
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.data);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.storage, glUsage);
+        this.gl.vertexAttribPointer(0, 3, this.gl.FLOAT, false, 7 * FLOAT, 0);
+        this.gl.enableVertexAttribArray(0);
+        this.gl.vertexAttribPointer(1, 4, this.gl.FLOAT, false, 7 * FLOAT, 3 * FLOAT);
+        this.gl.enableVertexAttribArray(1);
+        console.log('done');
     };
 
     unbind():void{
-        gl.bindBuffer(gl.VERTEX_ARRAY, null);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
     };
+
+
 };
 
 /**
@@ -81,14 +92,17 @@ export class VertexBuffer {
  export class IndexBuffer {
 
     private data : ArrayBuffer; 
-    private storage : Uint32Array;
-    private id : number;
+    private storage : Uint16Array = null;
+    private id : number = 0;
     private numBytes : number;
     private usage : number;
+    private gl : any;
 
-    constructor(graphicsDevice : GraphicsDevice, indices : Uint32Array, usage : number = BUFFER_STATIC){
+    constructor(gl : any, graphicsDevice : GraphicsDevice, indices : Uint16Array, usage : number = BUFFER_STATIC){
         this.id = id++;
         this.storage = indices;
+        this.gl = gl;
+        this.usage = usage;
         graphicsDevice.addIBuffer(this);
     };
 
@@ -100,37 +114,39 @@ export class VertexBuffer {
         return false;
     };
 
+    get getStorage(){
+        return this.storage;
+    }
+
     bind?():void{
         if(!this.data){
-            this.data = gl.createBuffer();
+            this.data = this.gl.createBuffer();
         };
-        if(!this.data){
-            this.data = gl.createBuffer();
-        };
-        
+
         let glUsage : any;
 
         switch (this.usage) {
             case BUFFER_STATIC:
-                glUsage = gl.STATIC_DRAW;
+                glUsage = this.gl.STATIC_DRAW;
                 break;
             case BUFFER_DYNAMIC:
-                glUsage = gl.DYNAMIC_DRAW;
+                glUsage = this.gl.DYNAMIC_DRAW;
                 break;
             case BUFFER_STREAM:
-                glUsage = gl.STREAM_DRAW;
+                glUsage = this.gl.STREAM_DRAW;
                 break;
             case BUFFER_GPUDYNAMIC:
-                glUsage = gl.DYNAMIC_COPY;
+                glUsage = this.gl.DYNAMIC_COPY;
                 break;
-        };
+        }
 
-        gl.bindBuffer(gl.ELEMENT_VERTEX_ARRAY, this.data);
-        gl.bufferData(gl.ELEMENT_VERTEX_ARRAY, this.storage, null, glUsage);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.data);
+        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, this.storage,  glUsage);
+        this.gl.drawElements(this.gl.TRIANGLES, this.storage.length, this.gl.UNSIGNED_SHORT, 0);
     };
 
     unbind?():void{
-        gl.bindBuffer(gl.ELEMENT_VERTEX_ARRAY, null);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
     };
 
  
