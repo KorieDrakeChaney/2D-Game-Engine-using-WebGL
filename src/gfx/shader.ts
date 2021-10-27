@@ -34,11 +34,7 @@ export default class Shader {
 
 
     constructor(graphicsDevice : GraphicsDevice, definition : Object){
-
         this.init();
-
-
-
     };
 
     init(){

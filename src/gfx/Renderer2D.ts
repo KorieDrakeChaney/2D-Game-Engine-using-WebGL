@@ -10,14 +10,32 @@ import {
     BOOL
 } from './constants.js';
 
+let Quad = {
+    position : new vec2([0, 0]),
+    size : new vec2([1, 1]),
+    color : new vec4([1, 1, 1, 1]),
+    textureID : 0
+}
 
-export function DrawQuad(
-    position : vec2 = new vec2([0, 0]),
-    size : vec2 = new vec2([0.5, 0.5]), 
-    color : vec4 = new vec4([1, 1, 1, 1]), 
-    textureID : number = 0):void
+export function DrawQuad(data : any = Quad):void
     {
-        let gl = getApplication().getGL();
+        if (!data.position){
+            data.position = Quad.position;
+        }
+        let position : vec2 = data.position;
+        if (!data.size){
+            data.size = Quad.size;
+        }
+        let size : vec2 = data.size
+        if(!data.color){
+            data.color = Quad.color;
+        };
+        let color : vec4 = data.color;
+        if(!data.textureID){
+            data.textureID = Quad.textureID;
+        };
+        let textureID : number = data.textureID;
+        
         let vertices : Array<number> = [];
 
     let offset = 0;

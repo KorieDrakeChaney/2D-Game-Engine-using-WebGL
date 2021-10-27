@@ -29,9 +29,6 @@ var Application = (function () {
             ;
             setApplication(this);
         };
-        this.update = function () {
-            this.draw();
-        };
         this.draw = function () {
             this.GraphicsDevice.initalize();
         };
@@ -56,6 +53,9 @@ var Application = (function () {
         };
         this.getGraphicsDevice = function () {
             return this.GraphicsDevice;
+        };
+        this.start = function (gameObject) {
+            gameObject.update();
         };
         this.app = app;
     }

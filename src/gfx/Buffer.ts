@@ -72,7 +72,6 @@ export class VertexBuffer {
         this.gl.enableVertexAttribArray(0);
         this.gl.vertexAttribPointer(1, 4, this.gl.FLOAT, false, 7 * FLOAT, 3 * FLOAT);
         this.gl.enableVertexAttribArray(1);
-        console.log('done');
     };
 
     unbind():void{

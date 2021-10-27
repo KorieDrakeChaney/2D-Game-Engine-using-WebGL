@@ -25,37 +25,26 @@ export default class GraphicsDevice {
     initalize():void {
         this.quadBatch.flush();
         this.gl.useProgram(this.program);
-        this.bindAll();
-        this.unbindAll();
+        this.update();
 
         
     };
 
+
+
+
     update():void {
-    };
+        for(let i = 0; i < this.vbuffers.length; i++){
+            this.vbuffers[i].bind();
+            this.ibuffers[i].bind();
 
-
-
-    bindAll():void {
-        this.vbuffers.forEach(buffer => {
-            buffer.bind();
-        });
-
-        this.ibuffers.forEach(buffer => {
-            buffer.bind();
-        });
+            this.vbuffers[i].bind();
+            this.ibuffers[i].bind();
+        }
 
     };
 
-    unbindAll():void {
-        this.vbuffers.forEach(buffer => {
-            buffer.unbind();
-        });
 
-        this.ibuffers.forEach(buffer => {
-            buffer.unbind();
-        });
-    };
 
     addVBuffer(vBuffer : VertexBuffer):void {
         this.vbuffers.push(vBuffer);

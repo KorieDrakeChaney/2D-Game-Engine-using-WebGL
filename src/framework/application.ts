@@ -1,6 +1,6 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
-
+import game from "../game.js";
 
 
 export default class Application {
@@ -43,13 +43,10 @@ export default class Application {
         setApplication(this);
     };
 
-    update = function():void{
-        this.draw();
-    };
 
     draw = function():void{
         this.GraphicsDevice.initalize();
-    }
+    };
 
     clear = function():void{ 
         this.gl.clearColor(0, 0, 0, 1);
@@ -71,12 +68,19 @@ export default class Application {
     };
     
 
+
+
     getGL = function(){
         return this.gl;
     };
 
     getGraphicsDevice = function():GraphicsDevice{
         return this.GraphicsDevice;
+    };
+
+
+    start = function(gameObject : any){
+        gameObject.update();
     };
 
 

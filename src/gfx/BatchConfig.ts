@@ -4,15 +4,13 @@ import GraphicsDevice from "./GraphicsDevice.js";
 
 
 export class QuadBatch {
-    
 
-    private maxQuads : number = 1000;
-    private maxVertices : number = this.maxQuads * 4;
+    private maxQuads : number = 100;
+    private maxVertices : number = this.maxQuads * (4 * (3 + 4));
     private maxIndices : number = this.maxQuads * 6;
     private count : number = 0;
     private vertices : Float32Array = new Float32Array(this.maxVertices);
     private indices : Uint16Array = new Uint16Array(this.maxIndices);
-    private vao : any = null;
     private gl : any = null;
     private graphicsDevice : GraphicsDevice = null;
 
@@ -25,28 +23,34 @@ export class QuadBatch {
 
 
     addQuad(vertices : Array<any>):void{
-        if (this.count + 1 % this.maxQuads === 0){
+        if (this.count + 1 > 100){
             this.flush();
         }
-        else{
 
-            for(let i = 0; i < 4; i++){
-                this.vertices[0 + ((this.count) * 28) + (i * 7)] = vertices[0 + (i * 7)];
-                this.vertices[1 + ((this.count) * 28) + (i * 7)] = vertices[1 + (i * 7)];
-                this.vertices[2 + ((this.count) * 28) + (i * 7)] = vertices[2 + (i * 7)];
-                this.vertices[3 + ((this.count) * 28) + (i * 7)] = vertices[3 + (i * 7)];
-                this.vertices[4 + ((this.count) * 28) + (i * 7)] = vertices[4 + (i * 7)];
-                this.vertices[5 + ((this.count) * 28) + (i * 7)] = vertices[5 + (i * 7)];
-                this.vertices[6 + ((this.count) * 28) + (i * 7)] = vertices[6 + (i * 7)];
-            };
+        for(let i = 0; i < 4; i++){
+            this.vertices[0 + ((this.count) * 28) + (i * 7)] = vertices[0 + (i * 7)];
+            this.vertices[1 + ((this.count) * 28) + (i * 7)] = vertices[1 + (i * 7)];
+            this.vertices[2 + ((this.count) * 28) + (i * 7)] = vertices[2 + (i * 7)];
+            this.vertices[3 + ((this.count) * 28) + (i * 7)] = vertices[3 + (i * 7)];
+            this.vertices[4 + ((this.count) * 28) + (i * 7)] = vertices[4 + (i * 7)];
+            this.vertices[5 + ((this.count) * 28) + (i * 7)] = vertices[5 + (i * 7)];
+            this.vertices[6 + ((this.count) * 28) + (i * 7)] = vertices[6 + (i * 7)];
         };
+        
         this.count++;
-
     };
 
     flush(){
+        console.log('dam');
+        console.log(this.vertices);
         new VertexBuffer(this.gl, this.graphicsDevice, this.vertices);
+        new IndexBuffer(this.gl, this.graphicsDevice, this.indices);
+
+        this.vertices = new Float32Array(this.maxVertices);
+        this.count = 0;
     };
+
+
 
     indiceInitialize():void{
         let offset = 0;
@@ -59,8 +63,6 @@ export class QuadBatch {
             this.indices[5 + i] = 0 + offset; // 0
             offset += 4;
         };
-
-        new IndexBuffer(this.gl, this.graphicsDevice, this.indices)
     };
 
 
