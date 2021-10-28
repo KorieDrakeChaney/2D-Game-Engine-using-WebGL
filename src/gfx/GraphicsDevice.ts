@@ -1,13 +1,15 @@
 import { getApplication } from '../framework/globals.js';
 import Application from '../framework/Application.js';
 import {VertexBuffer, IndexBuffer} from './Buffer.js';
-import * as Shader from "./Shader.js";
+import Shader from "./Shader.js"
+import {getProgram}  from "./Shader.js";
 import { QuadBatch } from './BatchConfig.js';
 
 export default class GraphicsDevice {
 
     private vbuffers : Array<VertexBuffer> = new Array();
     private ibuffers : Array<IndexBuffer> = new Array();
+    private shaders : Array<Shader> = new Array();
     private texture : Array<any>;
     private gl : any;
     private app : Application;
@@ -17,7 +19,7 @@ export default class GraphicsDevice {
     constructor(app : Application){
         this.app = app;
         this.gl = this.app.getGL();
-        this.program = Shader.getProgram(this.gl);
+        this.program = getProgram(this.gl);
         this.quadBatch = new QuadBatch(this.gl, this);
     };
 
@@ -34,9 +36,11 @@ export default class GraphicsDevice {
 
 
     update():void {
+
         for(let i = 0; i < this.vbuffers.length; i++){
             this.vbuffers[i].bind();
             this.ibuffers[i].bind();
+
 
             this.vbuffers[i].bind();
             this.ibuffers[i].bind();
@@ -53,6 +57,10 @@ export default class GraphicsDevice {
     addIBuffer(iBuffer : IndexBuffer):void{
         this.ibuffers.push(iBuffer);
     };
+
+    addShader(shader : Shader):void{
+        this.shaders.push(shader);
+    };  
 
     add(vertices : Array<number>):void{
         this.quadBatch.addQuad(vertices);

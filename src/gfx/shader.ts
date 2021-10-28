@@ -26,33 +26,55 @@ export default class Shader {
     private ready : boolean = false;
     private failed : boolean = false;
 
+    private gl : any = null;
+
     private defintion : object = { 
         attributes : 0, 
-        uniforms : 0, 
-        samplers : 0
+        uniforms : 0
     }; 
 
 
-    constructor(graphicsDevice : GraphicsDevice, definition : Object){
+    constructor(gl : any, graphicsDevice : GraphicsDevice, definition : Object){
         this.init();
+        this.gl = gl; 
     };
 
-    init(){
+    init():void{
         this.attributes = [];
         this.uniforms = [];
-        this.samplers = [];
 
         this.ready = false;
         this.failed = false;
-    }
+    };
+
+    bind():void{
+        this.attributes.forEach(attributes => {
+
+        });
+
+        this.uniforms.forEach(uniforms => {
+
+        });
+
+    };
+
+    unbind():void{
+        this.attributes.forEach(attributes => {
+
+        });
+
+        this.uniforms.forEach(uniforms => {
+
+        });
+    };
 
 };
 
 
 export let getProgram = function(gl : any){
     
-    let vertexShader = this.getShader(gl, "../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);
-    let fragmentShader = this.getShader(gl, "../../../../res/shader/simpleFS.glsl", gl.FRAGMENT_SHADER);
+    let vertexShader = getShader(gl, "../../../../res/shader/simpleVS.glsl", gl.VERTEX_SHADER);
+    let fragmentShader = getShader(gl, "../../../../res/shader/simpleFS.glsl", gl.FRAGMENT_SHADER);
 
     let program = gl.createProgram();
     gl.attachShader(program, vertexShader);

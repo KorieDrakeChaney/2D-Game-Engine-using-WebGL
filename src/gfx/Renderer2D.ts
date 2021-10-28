@@ -43,15 +43,29 @@ export function DrawQuad(data : any = Quad):void
                         [position.x + size.x, position.y - size.y],
                         [position.x + size.x, position.y + size.y], 
                         [position.x - size.x, position.y + size.y] ];
+
+    let texCoords = [
+        [1.0, 1.0], // top right 
+        [0.0, 1.0], // top left
+        [1.0, 0.0], // bottom right
+        [0.0, 0.0]  // bottom left
+    ];
+    
     for(let i = 0; i < 4; i++){
+        // position
         vertices[0 + (offset)] = boxPositions[i][0];
         vertices[1 + (offset)] = boxPositions[i][1];
         vertices[2 + (offset)] = 0;
-        vertices[3 + (offset)] = color.x;
+        // color
+        vertices[3 + (offset)] = color.x;  
         vertices[4 + (offset)] = color.y;
         vertices[5 + (offset)] = color.z;
         vertices[6 + (offset)] = color.w;
-        offset+=7;
+        // tex coords
+        vertices[7 + (offset)] = texCoords[i][0];
+        vertices[8 + (offset)] = texCoords[i][1];
+
+        offset+=9;
     };
     let graphicsDevice = getApplication().getGraphicsDevice();
     graphicsDevice.add(vertices);

@@ -6,7 +6,9 @@ import GraphicsDevice from "./GraphicsDevice.js";
 export class QuadBatch {
 
     private maxQuads : number = 100;
-    private maxVertices : number = this.maxQuads * (4 * (3 + 4));
+    private verticeCount : number = 9;
+    private verticeNumber : number = 4 * this.verticeCount;
+    private maxVertices : number = this.maxQuads * this.verticeNumber;
     private maxIndices : number = this.maxQuads * 6;
     private count : number = 0;
     private vertices : Float32Array = new Float32Array(this.maxVertices);
@@ -23,33 +25,49 @@ export class QuadBatch {
 
 
     addQuad(vertices : Array<any>):void{
-        if (this.count + 1 > 100){
+        if (this.count + 1 > this.maxQuads){
             this.flush();
         }
 
         for(let i = 0; i < 4; i++){
-            this.vertices[0 + ((this.count) * 28) + (i * 7)] = vertices[0 + (i * 7)];
-            this.vertices[1 + ((this.count) * 28) + (i * 7)] = vertices[1 + (i * 7)];
-            this.vertices[2 + ((this.count) * 28) + (i * 7)] = vertices[2 + (i * 7)];
-            this.vertices[3 + ((this.count) * 28) + (i * 7)] = vertices[3 + (i * 7)];
-            this.vertices[4 + ((this.count) * 28) + (i * 7)] = vertices[4 + (i * 7)];
-            this.vertices[5 + ((this.count) * 28) + (i * 7)] = vertices[5 + (i * 7)];
-            this.vertices[6 + ((this.count) * 28) + (i * 7)] = vertices[6 + (i * 7)];
+            // position
+            this.vertices[0 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[0 + (i * this.verticeCount)];
+            this.vertices[1 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[1 + (i * this.verticeCount)];
+            this.vertices[2 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[2 + (i * this.verticeCount)];
+            // color
+            this.vertices[3 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[3 + (i * this.verticeCount)];
+            this.vertices[4 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[4 + (i * this.verticeCount)];
+            this.vertices[5 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[5 + (i * this.verticeCount)];
+            this.vertices[6 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[6 + (i * this.verticeCount)];
+            // tex coords
+            this.vertices[7 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[7 + (i * this.verticeCount)];
+            this.vertices[8 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
+                            = vertices[8 + (i * this.verticeCount)];
+
         };
         
         this.count++;
     };
 
-    flush(){
-        console.log('dam');
-        console.log(this.vertices);
+    flush():void{
         new VertexBuffer(this.gl, this.graphicsDevice, this.vertices);
         new IndexBuffer(this.gl, this.graphicsDevice, this.indices);
 
+        this.reset();
+    };
+
+    reset():void{
         this.vertices = new Float32Array(this.maxVertices);
         this.count = 0;
     };
-
 
 
     indiceInitialize():void{

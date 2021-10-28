@@ -46,3 +46,9 @@ export const INT4 : number = 4 * 4;
 export const MAT3 : number = 4 * 3 * 3;
 export const MAT4 : number = 4 * 4 * 4;
 export const BOOL : number = 1;
+
+
+export const VERTEX_POSITION : number = 0;
+export const COLOR : number = 1; 
+export const TEXTURE_COORD : number = 2;
+export const TEXTURE_INDEX : number = 3;

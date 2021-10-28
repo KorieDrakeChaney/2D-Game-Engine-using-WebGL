@@ -2,7 +2,9 @@ import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,
         FLOAT, FLOAT2, FLOAT3, FLOAT4, 
         INT, INT2, INT3, INT4, 
         MAT3, MAT4, 
-        BOOL} from './constants.js';
+        BOOL,
+    
+        VERTEX_POSITION, COLOR, TEXTURE_COORD, TEXTURE_INDEX} from './constants.js';
 import GraphicsDevice from './GraphicsDevice.js';
 
 
@@ -68,10 +70,10 @@ export class VertexBuffer {
         };
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.data);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, this.storage, glUsage);
-        this.gl.vertexAttribPointer(0, 3, this.gl.FLOAT, false, 7 * FLOAT, 0);
-        this.gl.enableVertexAttribArray(0);
-        this.gl.vertexAttribPointer(1, 4, this.gl.FLOAT, false, 7 * FLOAT, 3 * FLOAT);
-        this.gl.enableVertexAttribArray(1);
+        this.gl.vertexAttribPointer(VERTEX_POSITION, 3, this.gl.FLOAT, false, 9 * FLOAT, 0);
+        this.gl.enableVertexAttribArray(VERTEX_POSITION);
+        this.gl.vertexAttribPointer(COLOR, 4, this.gl.FLOAT, false, 9 * FLOAT, 3 * FLOAT);
+        this.gl.enableVertexAttribArray(COLOR);
     };
 
     unbind():void{

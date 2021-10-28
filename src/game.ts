@@ -12,8 +12,7 @@ export default function game(){
 
 game.prototype.start = function(){
     this.App.initialize();
-
-    let i = 0;
+    
     for(let x = -0.9; x <= 0.8; x+=0.1){
         for(let y = -0.9; y <= 0.8; y+=0.1){
             Renderer2D.DrawQuad({
