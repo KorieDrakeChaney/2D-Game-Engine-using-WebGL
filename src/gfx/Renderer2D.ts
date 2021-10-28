@@ -50,7 +50,7 @@ export function DrawQuad(data : any = Quad):void
         [1.0, 0.0], // bottom right
         [0.0, 0.0]  // bottom left
     ];
-    
+
     for(let i = 0; i < 4; i++){
         // position
         vertices[0 + (offset)] = boxPositions[i][0];
@@ -64,8 +64,10 @@ export function DrawQuad(data : any = Quad):void
         // tex coords
         vertices[7 + (offset)] = texCoords[i][0];
         vertices[8 + (offset)] = texCoords[i][1];
+        // tex index 
+        vertices[9 + (offset)] = textureID;
 
-        offset+=9;
+        offset+=10;
     };
     let graphicsDevice = getApplication().getGraphicsDevice();
     graphicsDevice.add(vertices);

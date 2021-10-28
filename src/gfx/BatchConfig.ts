@@ -6,7 +6,7 @@ import GraphicsDevice from "./GraphicsDevice.js";
 export class QuadBatch {
 
     private maxQuads : number = 100;
-    private verticeCount : number = 9;
+    private verticeCount : number = 10;
     private verticeNumber : number = 4 * this.verticeCount;
     private maxVertices : number = this.maxQuads * this.verticeNumber;
     private maxIndices : number = this.maxQuads * 6;
@@ -51,6 +51,9 @@ export class QuadBatch {
                             = vertices[7 + (i * this.verticeCount)];
             this.vertices[8 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)] 
                             = vertices[8 + (i * this.verticeCount)];
+            // tex index 
+            this.vertices[9 + ((this.count) * this.verticeNumber) + (i * this.verticeCount)]
+                            = vertices[9 + (i * this.verticeCount)];
 
         };
         

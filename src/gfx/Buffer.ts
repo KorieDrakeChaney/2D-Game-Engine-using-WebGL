@@ -70,9 +70,9 @@ export class VertexBuffer {
         };
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.data);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, this.storage, glUsage);
-        this.gl.vertexAttribPointer(VERTEX_POSITION, 3, this.gl.FLOAT, false, 9 * FLOAT, 0);
+        this.gl.vertexAttribPointer(VERTEX_POSITION, 3, this.gl.FLOAT, false, 10 * FLOAT, 0);
         this.gl.enableVertexAttribArray(VERTEX_POSITION);
-        this.gl.vertexAttribPointer(COLOR, 4, this.gl.FLOAT, false, 9 * FLOAT, 3 * FLOAT);
+        this.gl.vertexAttribPointer(COLOR, 4, this.gl.FLOAT, false, 10 * FLOAT, 3 * FLOAT);
         this.gl.enableVertexAttribArray(COLOR);
     };
 
