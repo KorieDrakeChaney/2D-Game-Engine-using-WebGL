@@ -55,6 +55,7 @@ var Application = (function () {
             return this.GraphicsDevice;
         };
         this.start = function (gameObject) {
+            console.log(gameObject);
             gameObject.update();
         };
         this.app = app;

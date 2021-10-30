@@ -17,6 +17,7 @@ export default class Application {
     
     private autoRender  : boolean = true;
     private renderNextFrame  : boolean = false;
+    
 
     constructor(app : any){
         this.app = app;
@@ -80,6 +81,7 @@ export default class Application {
 
 
     start = function(gameObject : any){
+        console.log(gameObject);
         gameObject.update();
     };
 

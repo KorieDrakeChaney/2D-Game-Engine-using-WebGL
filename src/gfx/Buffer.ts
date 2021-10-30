@@ -1,3 +1,4 @@
+import mat4 from '../math/mat4.js';
 import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,
         FLOAT, FLOAT2, FLOAT3, FLOAT4, 
         INT, INT2, INT3, INT4, 
@@ -32,7 +33,6 @@ export class VertexBuffer {
         this.storage = vertices;
         this.gl = gl;
         graphicsDevice.addVBuffer(this);
-
     };
 
     setData(d : typeof this.data):boolean{
@@ -74,6 +74,13 @@ export class VertexBuffer {
         this.gl.enableVertexAttribArray(VERTEX_POSITION);
         this.gl.vertexAttribPointer(COLOR, 4, this.gl.FLOAT, false, 10 * FLOAT, 3 * FLOAT);
         this.gl.enableVertexAttribArray(COLOR);
+        this.gl.vertexAttribPointer(TEXTURE_COORD, 2, this.gl.FLOAT, false, 10 * FLOAT, 7 * FLOAT);
+        this.gl.enableVertexAttribArray(TEXTURE_COORD);
+        this.gl.vertexAttribPointer(TEXTURE_INDEX, 1, this.gl.FLOAT, false, 10 * FLOAT, 9 * FLOAT);
+        this.gl.enableVertexAttribArray(TEXTURE_INDEX);
+
+        // view Model
+
     };
 
     unbind():void{
@@ -90,6 +97,7 @@ export class VertexBuffer {
  */
 
 
+
  export class IndexBuffer {
 
     private data : ArrayBuffer; 
@@ -98,6 +106,7 @@ export class VertexBuffer {
     private numBytes : number;
     private usage : number;
     private gl : any;
+    
 
     constructor(gl : any, graphicsDevice : GraphicsDevice, indices : Uint16Array, usage : number = BUFFER_STATIC){
         this.id = id++;

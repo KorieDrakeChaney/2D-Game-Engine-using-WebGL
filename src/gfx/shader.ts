@@ -30,7 +30,8 @@ export default class Shader {
 
     private defintion : object = { 
         attributes : 0, 
-        uniforms : 0
+        uniforms : 0, 
+        samplers : 0
     }; 
 
 
@@ -42,20 +43,24 @@ export default class Shader {
     init():void{
         this.attributes = [];
         this.uniforms = [];
+        this.samplers = [];
 
         this.ready = false;
         this.failed = false;
     };
 
     bind():void{
-        this.attributes.forEach(attributes => {
+        this.attributes.forEach(attribute => {
 
         });
 
-        this.uniforms.forEach(uniforms => {
+        this.uniforms.forEach(uniform => {
 
         });
 
+        this.samplers.forEach(sampler => {
+
+        });
     };
 
     unbind():void{

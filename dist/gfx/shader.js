@@ -5,7 +5,8 @@ var Shader = (function () {
         this.gl = null;
         this.defintion = {
             attributes: 0,
-            uniforms: 0
+            uniforms: 0,
+            samplers: 0
         };
         this.init();
         this.gl = gl;
@@ -14,14 +15,17 @@ var Shader = (function () {
     Shader.prototype.init = function () {
         this.attributes = [];
         this.uniforms = [];
+        this.samplers = [];
         this.ready = false;
         this.failed = false;
     };
     ;
     Shader.prototype.bind = function () {
-        this.attributes.forEach(function (attributes) {
+        this.attributes.forEach(function (attribute) {
         });
-        this.uniforms.forEach(function (uniforms) {
+        this.uniforms.forEach(function (uniform) {
+        });
+        this.samplers.forEach(function (sampler) {
         });
     };
     ;

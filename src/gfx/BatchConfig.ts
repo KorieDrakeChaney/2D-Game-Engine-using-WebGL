@@ -1,15 +1,17 @@
 import { VertexBuffer, IndexBuffer } from "./Buffer.js";
 import GraphicsDevice from "./GraphicsDevice.js";
+import Texture from "./Texture.js";
 
 
 
 export class QuadBatch {
 
-    private maxQuads : number = 100;
+    private maxQuads : number = 1000;
     private verticeCount : number = 10;
     private verticeNumber : number = 4 * this.verticeCount;
     private maxVertices : number = this.maxQuads * this.verticeNumber;
     private maxIndices : number = this.maxQuads * 6;
+    private maxTextures : number = null;
     private count : number = 0;
     private vertices : Float32Array = new Float32Array(this.maxVertices);
     private indices : Uint16Array = new Uint16Array(this.maxIndices);
@@ -21,6 +23,7 @@ export class QuadBatch {
         this.gl = gl;
         this.graphicsDevice = graphicsDevice;
         this.indiceInitialize();
+        this.maxTextures = this.gl.getParameter(this.gl.MAX_TEXTURE_IMAGE_UNITS);
     };
 
 
@@ -63,7 +66,6 @@ export class QuadBatch {
     flush():void{
         new VertexBuffer(this.gl, this.graphicsDevice, this.vertices);
         new IndexBuffer(this.gl, this.graphicsDevice, this.indices);
-
         this.reset();
     };
 
