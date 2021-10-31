@@ -1,4 +1,5 @@
 import TextureManger from "./TextureManager.js";
+import {getApplication} from "../framework/globals.js"
 /**
  * @class
  * @name Texture
@@ -14,13 +15,40 @@ export default class Texture {
     private id : number;
 
 
-    constructor(gl : any, textureManager : TextureManger){
-        this.textureManager = textureManager;
-        this.gl = gl;    
+    constructor(src : string){
+        let image = new Image();
+        image.src = src;
+        image.onload = async function() {
+            Texture.render(image);
+        };
+    };
 
-        this.textureManager.add(this);
+    static render(image : any):void{
+        let gl = getApplication().getGL;
+        let texCoordBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+            0.0,  0.0,
+            1.0,  0.0,
+            0.0,  1.0,
+            0.0,  1.0,
+            1.0,  0.0,
+            1.0,  1.0]), gl.STATIC_DRAW);
 
-        this.id = id++;
+
+        // Create a texture.
+        let texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        
+        // Set the parameters so we can render any size image.
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        
+        // Upload the image into the texture.
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
     };
 
     bind():void { 
@@ -42,6 +70,8 @@ export default class Texture {
 
 export function loadTexture(path : String) {
     let texture = null;
+
+    
 
     return texture;
 };

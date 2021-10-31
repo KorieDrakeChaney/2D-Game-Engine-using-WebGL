@@ -13,6 +13,7 @@ import {
 let Quad = {
     position : new vec2([0, 0]),
     size : new vec2([1, 1]),
+    rotation : 0,
     color : new vec4([1, 1, 1, 1]),
     textureID : 0
 }
@@ -26,7 +27,11 @@ export function DrawQuad(data : any = Quad):void
         if (!data.size){
             data.size = Quad.size;
         }
-        let size : vec2 = data.size
+        let size : vec2 = data.size;
+        if(!data.rotation){
+            data.rotation = Quad.rotation;
+        };
+        let rotation : number = data.rotation;
         if(!data.color){
             data.color = Quad.color;
         };
@@ -53,8 +58,8 @@ export function DrawQuad(data : any = Quad):void
 
     for(let i = 0; i < 4; i++){
         // position
-        vertices[0 + (offset)] = boxPositions[i][0];
-        vertices[1 + (offset)] = boxPositions[i][1];
+        vertices[0 + (offset)] = boxPositions[i][0] * Math.cos(rotation) - boxPositions[i][1]*Math.sin(rotation);
+        vertices[1 + (offset)] = boxPositions[i][0] * Math.sin(rotation) + boxPositions[i][1]* Math.cos(rotation);
         vertices[2 + (offset)] = 0;
         // color
         vertices[3 + (offset)] = color.x;  
@@ -71,7 +76,6 @@ export function DrawQuad(data : any = Quad):void
     };
     let graphicsDevice = getApplication().getGraphicsDevice();
     graphicsDevice.add(vertices);
-    
 };
 
 

@@ -7,5 +7,4 @@ export default class Camera extends Component{
     constructor(){
         super();
     }
-
 };

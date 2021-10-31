@@ -11,6 +11,7 @@ var Application = (function () {
         this.frame = 0;
         this.autoRender = true;
         this.renderNextFrame = false;
+        this.scripts = new Array();
         this.initialize = function () {
             this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
             this.GraphicsDevice = new GraphicsDevice(this);
@@ -54,12 +55,24 @@ var Application = (function () {
         this.getGraphicsDevice = function () {
             return this.GraphicsDevice;
         };
-        this.start = function (gameObject) {
-            console.log(gameObject);
-            gameObject.update();
+        this.start = function () {
+            this.scripts.forEach(function (script) {
+                script.update();
+            });
         };
         this.app = app;
+        this.initialize();
     }
+    ;
+    Application.prototype.addScript = function (script) {
+        if (script.update) {
+            this.scripts.push(script);
+        }
+        else {
+            console.error("Not valid script");
+        }
+        ;
+    };
     ;
     return Application;
 }());

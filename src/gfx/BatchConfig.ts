@@ -6,7 +6,7 @@ import Texture from "./Texture.js";
 
 export class QuadBatch {
 
-    private maxQuads : number = 1000;
+    private maxQuads : number = 10000;
     private verticeCount : number = 10;
     private verticeNumber : number = 4 * this.verticeCount;
     private maxVertices : number = this.maxQuads * this.verticeNumber;

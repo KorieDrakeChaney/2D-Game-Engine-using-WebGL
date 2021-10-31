@@ -22,11 +22,21 @@ var Transform = (function (_super) {
         if (scale === void 0) { scale = new vec2([1, 1]); }
         if (rotation === void 0) { rotation = 0; }
         var _this = _super.call(this) || this;
+        _this.id = "Transform";
         _this.position = position;
         _this.scale = scale;
         _this.rotation = rotation;
         return _this;
     }
+    ;
+    Transform.prototype.Initialize = function () {
+        this.entity.types.Transform = this.id;
+        this.entity.components = {
+            position: this.position,
+            scale: this.scale,
+            rotation: this.rotation
+        };
+    };
     ;
     return Transform;
 }(Component));

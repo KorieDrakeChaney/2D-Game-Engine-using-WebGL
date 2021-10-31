@@ -9,12 +9,11 @@ import Entity from './Entity.js';
 
 export default class Component {
 
-    public position : vec2;
-    public scale : vec2;
-    public rotation : number;
-
     public entity : Entity;
+    public id?:string;
 
     public Update?():void;
+    public Initialize?():void;
+
 }
 

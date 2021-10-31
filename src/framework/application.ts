@@ -1,7 +1,5 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
-import game from "../game.js";
-
 
 export default class Application {
     
@@ -19,8 +17,11 @@ export default class Application {
     private renderNextFrame  : boolean = false;
     
 
+    private scripts : Array<object> = new Array();
+
     constructor(app : any){
         this.app = app;
+        this.initialize();
     };
 
 
@@ -42,8 +43,17 @@ export default class Application {
             alert('Your browser does not support webgl');
         };
         setApplication(this);
+
     };
 
+    addScript(script : any){
+        if(script.update){
+            this.scripts.push(script);
+        }
+        else {
+            console.error("Not valid script");
+        };
+    };
 
     draw = function():void{
         this.GraphicsDevice.initalize();
@@ -80,9 +90,10 @@ export default class Application {
     };
 
 
-    start = function(gameObject : any){
-        console.log(gameObject);
-        gameObject.update();
+    start = function(){
+        this.scripts.forEach(script => {
+            script.update();
+        });
     };
 
 
