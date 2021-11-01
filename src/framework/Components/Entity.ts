@@ -18,7 +18,7 @@ export default class Entity {
     public components : any;
     public types : any;
 
-    private id : number;
+    public id : number;
     
 
     constructor(){
@@ -29,14 +29,16 @@ export default class Entity {
 
     };
 
-    public addComponent(T : Component){
-        if(T.id){
-            if(!this.types[T.id]){
-                T.entity = this;
-                T.Initialize();
+    public Update?(){};
+
+    public addComponent(C : Component){
+        if(C.id){
+            if(!this.types[C.id]){
+                C.entity = this;
+                C.Initialize();
             }
             else {
-                console.error("Already has component : ", typeof T);
+                console.error("Already has component : ", typeof C);
             };
         }
         else { 
@@ -45,31 +47,16 @@ export default class Entity {
 
     }; 
  
-    public draw():void{
-        if(!this.hasComponent("Transform") || !this.hasComponent("Sprite")){
-
-            return;
-        }
-        new Renderer2D.DrawQuad({
-            position : this.components.position, 
-            size : this.components.scale, 
-            rotation : this.components.rotation,
-            color : new vec4(this.components.color)
-        });
-        
-
-
-    };
-
-    public findComponent(T : Component):Component{
+    
+    public findComponent(C : Component):Component{
         return;
     };
 
-    public hasComponent(T : string):boolean{
-        if(this.types[T]){
+    public hasComponent(C : string):boolean{
+        if(this.types[C]){
             return true;
         };
-        console.log(this.id, "Does not have", T, "!");
+        console.log(this.id, "Does not have", C, "!");
         return false;
     };
 };

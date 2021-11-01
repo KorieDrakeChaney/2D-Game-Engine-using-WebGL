@@ -1,5 +1,5 @@
 import Entity from "../../framework/Components/Entity";
-import Sprite from "../../framework/Components/Sprite/Sprite";
-import Transform from "../../framework/Components/Transform/Transform";
+import Sprite from "../../framework/Components/Renderer/Sprite";
+import Transform from "../../framework/Components/Renderer/Transform";
 
 

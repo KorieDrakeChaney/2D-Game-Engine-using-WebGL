@@ -1,12 +1,10 @@
-import mat4 from '../../../math/mat4.js';
 import vec2 from '../../../math/vec2.js';
-import vec3 from '../../../math/vec3.js';
 import Component from '../Component.js';
 
 /**
  * @class
  * @name Transform
- * @description The transform component, describing the objects position, rotation, and scale.
+ * @description The transform component, describes the objects position, rotation, and scale.
  */
 
 
@@ -23,15 +21,12 @@ export default class Transform extends Component {
         this.position = position;
         this.scale = scale;
         this.rotation = rotation;
+        
     };
-
+    
     public Initialize():void{
         this.entity.types.Transform = this.id;
-        this.entity.components = {
-            position : this.position, 
-            scale : this.scale, 
-            rotation : this.rotation
-        }
+        this.app.RendererManager.addTransform(this);
     };
 
 };

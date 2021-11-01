@@ -74,7 +74,7 @@ export function DrawQuad(data : any = Quad):void
 
         offset+=10;
     };
-    let graphicsDevice = getApplication().getGraphicsDevice();
+    let graphicsDevice = getApplication().GraphicsDevice;
     graphicsDevice.add(vertices);
 };
 

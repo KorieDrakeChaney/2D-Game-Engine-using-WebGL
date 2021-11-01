@@ -1,5 +1,6 @@
 import vec2 from '../../math/vec2.js';
 import Entity from './Entity.js';
+import { getApplication } from '../globals.js';
 
 /**
  * @class
@@ -14,6 +15,8 @@ export default class Component {
 
     public Update?():void;
     public Initialize?():void;
+
+    protected app : any = getApplication();
 
 }
 

@@ -1,45 +1,51 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
+import RendererManager from "./Components/Renderer/RendererManager.js";
 
 export default class Application {
     
-    private app : any = null;
-    private gl : any = null;
+    private _app : any = null;
+    private _gl : any = null;
     
-    private GraphicsDevice : GraphicsDevice = null;
-    private time : number = 0;
-    private timeScale : number  = 1;
-    private maxDeltaTime : number  = 0.1;
+    private _time : number = 0;
+    private _timeScale : number  = 1;
+    private _maxDeltaTime : number  = 0.1;
     
-    private frame : number = 0;
+    private _frame : number = 0;
     
-    private autoRender  : boolean = true;
-    private renderNextFrame  : boolean = false;
+    private _autoRender  : boolean = true;
+    private _renderNextFrame  : boolean = false;
     
-
-    private scripts : Array<object> = new Array();
-
+    
+    private _scripts : Array<object> = new Array();
+    
+    
+    
+    
+    private _GraphicsDevice : GraphicsDevice = null;
+    private _RendererManager : RendererManager = new RendererManager();
+    
     constructor(app : any){
-        this.app = app;
+        this._app = app;
         this.initialize();
     };
 
 
     initialize = function():void{ 
 
-        this.gl = this.app.getContext('webgl2') || this.app.getContext('experimental-webgl2');
-        this.GraphicsDevice = new GraphicsDevice(this);
-        this.app.style.border = "1px solid pink";
+        this._gl = this._app.getContext('webgl2') || this._app.getContext('experimental-webgl2');
+        this._GraphicsDevice = new GraphicsDevice(this);
+        this._app.style.border = "1px solid pink";
         this.resizeCanvasToDisplaySize();
 
         try {
-            this.gl.viewport(0, 0, this.app.width, this.app.height);
+            this._gl.viewport(0, 0, this._app.width, this._app.height);
         }
         catch(err){
             console.error(err);
         };
 
-        if(this.gl === null){
+        if(this._gl === null){
             alert('Your browser does not support webgl');
         };
         setApplication(this);
@@ -47,8 +53,8 @@ export default class Application {
     };
 
     addScript(script : any){
-        if(script.update){
-            this.scripts.push(script);
+        if(script.Update){
+            this._scripts.push(script);
         }
         else {
             console.error("Not valid script");
@@ -56,44 +62,52 @@ export default class Application {
     };
 
     draw = function():void{
-        this.GraphicsDevice.initalize();
+        this._GraphicsDevice.initalize();
     };
 
     clear = function():void{ 
-        this.gl.clearColor(0, 0, 0, 1);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT || this.gl.DEPTH_BUFFER_BIT);
+        this._gl.clearColor(0, 0, 0, 1);
+        this._gl.clear(this._gl.COLOR_BUFFER_BIT || this._gl.DEPTH_BUFFER_BIT);
     };
+
+
 
     resizeCanvasToDisplaySize = function(){
 
         const dpr = window.devicePixelRatio;
         let width = window.innerWidth - 40;        
         let height = window.innerHeight - 30;
-        const needResize = this.app.width !== width || 
-                           this.app.height !== height;
+        const needResize = this._app.width !== width || 
+                           this._app.height !== height;
 
         if(needResize){
-            this.app.width = width;
-            this.app.height = height;
+            this._app.width = width;
+            this._app.height = height;
         };
     };
     
 
 
 
-    getGL = function(){
-        return this.gl;
+    get gl(){
+        return this._gl;
     };
 
-    getGraphicsDevice = function():GraphicsDevice{
-        return this.GraphicsDevice;
+    get GraphicsDevice():GraphicsDevice{
+        return this._GraphicsDevice;
     };
 
+    get RendererManager():RendererManager{
+        return this._RendererManager;
+    }
 
     start = function(){
-        this.scripts.forEach(script => {
-            script.update();
+        this._RendererManager.Update();
+        
+        this._scripts.forEach(script => {
+            script.Update();
         });
+
     };
 
 

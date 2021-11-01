@@ -10,7 +10,7 @@ out vec2 textureCoord;
 out float textureIndex;
 
 void main(void){
-    gl_Position =   vec4(aPos, 1.0);
+    gl_Position =  vec4(aPos, 1.0);
     vertexColor = aColor;
     textureCoord = aTextureCoord;
     textureIndex = aTextureIndex;

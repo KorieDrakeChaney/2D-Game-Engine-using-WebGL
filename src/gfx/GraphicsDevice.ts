@@ -18,7 +18,7 @@ export default class GraphicsDevice {
 
     constructor(app : Application){
         this.app = app;
-        this.gl = this.app.getGL();
+        this.gl = this.app.gl;
         this.program = getProgram(this.gl);
         this.quadBatch = new QuadBatch(this.gl, this);
     };
@@ -28,8 +28,6 @@ export default class GraphicsDevice {
         this.quadBatch.flush();
         this.gl.useProgram(this.program);
         this.update();
-
-        
     };
 
 
@@ -42,8 +40,8 @@ export default class GraphicsDevice {
             this.ibuffers[i].bind();
 
 
-            this.vbuffers[i].bind();
-            this.ibuffers[i].bind();
+            this.vbuffers[i].unbind();
+            this.ibuffers[i].unbind();
         }
 
     };
