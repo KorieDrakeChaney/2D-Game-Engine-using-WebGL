@@ -5,6 +5,7 @@ layout (location = 1) in vec4 aColor;
 layout (location = 2) in vec2 aTextureCoord;
 layout (location = 3) in float aTextureIndex;
 
+uniform mat4 uModel;
 
 out vec4 vertexColor;
 out vec2 textureCoord;
@@ -12,7 +13,7 @@ out float textureIndex;
 
 
 void main(void){
-    gl_Position =   vec4(aPos, 1.0);
+    gl_Position =  uModel * vec4(aPos, 1.0);
     vertexColor = aColor;
     textureCoord = aTextureCoord;
     textureIndex = aTextureIndex;

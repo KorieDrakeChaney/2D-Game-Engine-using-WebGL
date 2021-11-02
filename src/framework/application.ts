@@ -1,6 +1,7 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererManager from "./Components/Renderer/RendererManager.js";
+import EntityManager from "./Components/EntityManager.js";
 
 export class Timer{
     private name : string;
@@ -13,10 +14,10 @@ export class Timer{
     stop():void{
         let elapsedTime = (Date.now() - this.timer)/1000;
         if(elapsedTime >= 3.0){
-            console.error(`${this.name}: ${(elapsedTime).toFixed(3)} ms`);
+            console.error(`${this.name}: ${(elapsedTime).toFixed(3)}s`);
         }
         else {
-            console.log(`${this.name}: ${(elapsedTime).toFixed(3)} ms`);
+            console.log(`${this.name}: ${(elapsedTime).toFixed(3)}s`);
         };
     };
 }
@@ -46,20 +47,28 @@ export default class Application {
     
     
     private _GraphicsDevice : GraphicsDevice = null;
-    private _RendererManager : RendererManager = new RendererManager();
+    private _RendererManager : RendererManager = null;
+    private _EntityManager : EntityManager = null;
 
     private _loopIsRunning : boolean = false;
     
     constructor(app : any){
         this._app = app;
         this.initialize();
+
+
+
+        this._GraphicsDevice = new GraphicsDevice(this);
+        this._RendererManager = new RendererManager();
+        this._EntityManager = new EntityManager();
+
     };
 
 
     initialize = function():void{ 
 
         this._gl = this._app.getContext('webgl2') || this._app.getContext('experimental-webgl2');
-        this._GraphicsDevice = new GraphicsDevice(this);
+
         this._app.style.border = "1px solid pink";
         this.resizeCanvasToDisplaySize();
 
@@ -123,13 +132,13 @@ export default class Application {
             this.resizeCanvasToDisplaySize();
 
             while(this._lagTime >= this._MPF && this._loopIsRunning){
+                this._RendererManager.Update();
                 this.scene.Update();
                 this._lagTime -= this._MPF;
             }
             
             this.scene.Render();
-        
-
+            this.draw();
         };
     }; 
 
@@ -143,15 +152,19 @@ export default class Application {
 
     get RendererManager():RendererManager{
         return this._RendererManager;
-    }
+    }; 
+
+    get EntityManager():EntityManager{
+        return this._EntityManager;
+    };
 
     start = function(){
         this._loopIsRunning = true;
         this._time = Date.now();
-        this._RendererManager.Initialize();
+
+        this._EntityManager.Initialize();
 
         requestAnimationFrame( this._update.bind(this) );
-
     };
 
 

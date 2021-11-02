@@ -82,6 +82,8 @@ export class VertexBuffer {
         this.gl.vertexAttribPointer(TEXTURE_INDEX, 1, this.gl.FLOAT, false, 10 * FLOAT, 9 * FLOAT);
         this.gl.enableVertexAttribArray(TEXTURE_INDEX);
 
+        
+
 
     };
 
@@ -155,8 +157,6 @@ export class VertexBuffer {
         if(!this.data){
             this.data = this.gl.createBuffer();
         };
-
-
 
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.data);
         this.gl.drawElements(this.gl.TRIANGLES, this.storage.length, this.gl.UNSIGNED_SHORT, 0);

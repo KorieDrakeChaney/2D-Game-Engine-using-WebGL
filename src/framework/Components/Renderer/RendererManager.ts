@@ -1,9 +1,14 @@
 import Component from "../Component.js";
 import System from "../System.js";
 import Sprite from "./Sprite.js";
-import Transform from "./Transform.js";
+import Transform from "../Physics/Transform.js";
 import Renderer2D from "../../../gfx/Renderer2D.js"
 import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM} from "../../../gfx/constants.js";
+import GraphicsDevice from "../../../gfx/GraphicsDevice.js";
+import { getApplication } from "../../globals.js";
+import mat4 from "../../../math/mat4.js";
+import vec3 from "../../../math/vec3.js";
+
 
 /**
  * @class
@@ -19,8 +24,11 @@ export default class RendererManager extends System{
     private sprites : Array<Sprite> = new Array();
     private transforms : Array<Transform> = new Array();
 
+    private graphicsDevice : GraphicsDevice;
+
     constructor(){
         super();
+        this.graphicsDevice = this.app.GraphicsDevice;
     }
 
     addSprite(S : Sprite){
@@ -37,11 +45,25 @@ export default class RendererManager extends System{
             this.transforms.push(T);
         }
         else {
-            console.error(T.entity.id, "Slot has been taken !");
+            console.error(T.entity.id, "Does not have transform added");
         };
     };
 
-    Initialize(){
+    Update(){
 
+        for(let i = 0; i < this.sprites.length; i++){
+            Renderer2D.DrawQuad({
+                color : this.sprites[i].color, 
+                translation : this.transforms[i].translation,
+                rotation : this.transforms[i].rotation,
+                scale : this.transforms[i].scale, 
+            });
+        };
+
+        for(let i = 0; i < this.transforms.length;i++){
+
+
+
+        };
     };
 }

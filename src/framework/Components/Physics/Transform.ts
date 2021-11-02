@@ -15,7 +15,8 @@ export default class Transform extends Component {
     public rotation : number;
 
     public id : string = "Transform";
-
+    public weight : number = 0;
+    
     constructor(translation : vec2 = new vec2([0, 0]), scale : vec2 = new vec2([1, 1]), rotation : number = 0){
         super();
         this.translation = translation;
@@ -24,7 +25,9 @@ export default class Transform extends Component {
     };
     
     public Initialize():void{
-        this.entity.types.Transform = this.id;
+        if(this.entity){
+            this.entity.types.Transform = this.id;
+        };
         this.app.RendererManager.addTransform(this);
     };
 

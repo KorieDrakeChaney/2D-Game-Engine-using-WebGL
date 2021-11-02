@@ -1,6 +1,7 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererManager from "./Components/Renderer/RendererManager.js";
+import EntityManager from "./Components/EntityManager.js";
 var Timer = (function () {
     function Timer(name) {
         this.name = name;
@@ -10,10 +11,10 @@ var Timer = (function () {
     Timer.prototype.stop = function () {
         var elapsedTime = (Date.now() - this.timer) / 1000;
         if (elapsedTime >= 3.0) {
-            console.error(this.name + ": " + (elapsedTime).toFixed(3) + " ms");
+            console.error(this.name + ": " + (elapsedTime).toFixed(3) + "s");
         }
         else {
-            console.log(this.name + ": " + (elapsedTime).toFixed(3) + " ms");
+            console.log(this.name + ": " + (elapsedTime).toFixed(3) + "s");
         }
         ;
     };
@@ -36,11 +37,11 @@ var Application = (function () {
         this._lagTime = 0;
         this.scene = null;
         this._GraphicsDevice = null;
-        this._RendererManager = new RendererManager();
+        this._RendererManager = null;
+        this._EntityManager = null;
         this._loopIsRunning = false;
         this.initialize = function () {
             this._gl = this._app.getContext('webgl2') || this._app.getContext('experimental-webgl2');
-            this._GraphicsDevice = new GraphicsDevice(this);
             this._app.style.border = "1px solid pink";
             this.resizeCanvasToDisplaySize();
             try {
@@ -79,11 +80,14 @@ var Application = (function () {
         this.start = function () {
             this._loopIsRunning = true;
             this._time = Date.now();
-            this._RendererManager.Initialize();
+            this._EntityManager.Initialize();
             requestAnimationFrame(this._update.bind(this));
         };
         this._app = app;
         this.initialize();
+        this._GraphicsDevice = new GraphicsDevice(this);
+        this._RendererManager = new RendererManager();
+        this._EntityManager = new EntityManager();
     }
     ;
     Application.prototype.addScene = function (game) {
@@ -99,10 +103,12 @@ var Application = (function () {
             this._lagTime += elapsedTime;
             this.resizeCanvasToDisplaySize();
             while (this._lagTime >= this._MPF && this._loopIsRunning) {
+                this._RendererManager.Update();
                 this.scene.Update();
                 this._lagTime -= this._MPF;
             }
             this.scene.Render();
+            this.draw();
         }
         ;
     };
@@ -130,6 +136,15 @@ var Application = (function () {
         enumerable: false,
         configurable: true
     });
+    ;
+    Object.defineProperty(Application.prototype, "EntityManager", {
+        get: function () {
+            return this._EntityManager;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    ;
     return Application;
 }());
 export default Application;

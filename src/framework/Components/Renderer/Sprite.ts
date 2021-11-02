@@ -1,7 +1,7 @@
 import Texture from "../../../gfx/Texture.js";
 import vec4 from "../../../math/vec4.js";
 import Component from "../Component.js";
-import Transform from "./Transform.js";
+import Transform from "../Physics/Transform.js";
 
 
 export default class Sprite extends Component{
@@ -9,7 +9,7 @@ export default class Sprite extends Component{
     public color : vec4;
 
     public id : string = "Sprite";
-
+    public weight : number = 0;
 
     constructor(color : vec4 = new vec4([1, 0, 0, 1])) {
         super();
@@ -17,9 +17,6 @@ export default class Sprite extends Component{
     };
     
     public Initialize():void{
-        if(!this.entity.hasComponent("Transform")){
-            this.entity.addComponent(new Transform());
-        }
         this.entity.types.Sprite = this.id;
         this.app.RendererManager.addSprite(this);
     };

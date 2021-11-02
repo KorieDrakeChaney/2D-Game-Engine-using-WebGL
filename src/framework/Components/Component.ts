@@ -12,6 +12,7 @@ export default class Component {
 
     public entity : Entity;
     public id?:string;
+    public weight?:number;
 
     public Update?():void;
     public Initialize?():void;

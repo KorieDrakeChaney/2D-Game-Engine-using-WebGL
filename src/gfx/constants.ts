@@ -57,3 +57,5 @@ export const TEXTURE_INDEX : number = 3;
 
 export const entityTransform = "Transform";
 export const entitySprite = "Sprite";
+export const entityMotion = "Motion";
+export const entityInput = "Input";

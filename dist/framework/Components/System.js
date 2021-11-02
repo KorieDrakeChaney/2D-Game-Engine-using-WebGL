@@ -1,5 +1,7 @@
+import { getApplication } from "../globals.js";
 var System = (function () {
     function System() {
+        this.app = getApplication();
     }
     ;
     System.prototype.Update = function () { };

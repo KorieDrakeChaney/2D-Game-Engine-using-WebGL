@@ -1,9 +1,12 @@
+import { getApplication } from '../globals.js';
+import { Timer } from '../Application.js';
 var id = 0;
 var Entity = (function () {
     function Entity() {
         this.components = new Array();
         this.types = {};
         this.id = id++;
+        getApplication().EntityManager.addEntity(this);
     }
     ;
     Entity.prototype.Update = function () { };
@@ -12,7 +15,6 @@ var Entity = (function () {
         if (C.id) {
             if (!this.types[C.id]) {
                 C.entity = this;
-                C.Initialize();
                 this.components.push(C);
             }
             else {
@@ -48,6 +50,35 @@ var Entity = (function () {
         ;
         console.log(this.id, "Does not have", C, "!");
         return false;
+    };
+    ;
+    Entity.prototype.Initialize = function () {
+        this.sort();
+        this.components.forEach(function (component) {
+            component.Initialize();
+        });
+    };
+    ;
+    Entity.prototype.sort = function () {
+        var timer = new Timer("Entity Sort");
+        var c = 0;
+        var newArray = new Array();
+        var _loop_1 = function (i) {
+            this_1.components.forEach(function (component) {
+                if (component.weight === i) {
+                    newArray[c] = component;
+                    c++;
+                }
+                ;
+            });
+        };
+        var this_1 = this;
+        for (var i = 0; i < 3; i++) {
+            _loop_1(i);
+        }
+        ;
+        this.components = newArray;
+        timer.stop();
     };
     ;
     return Entity;

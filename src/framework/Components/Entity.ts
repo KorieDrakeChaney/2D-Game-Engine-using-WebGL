@@ -2,6 +2,8 @@ import Component from './Component.js';
 import * as Renderer2D from "../../gfx/Renderer2D.js";
 import vec2 from '../../math/vec2.js';
 import vec4 from '../../math/vec4.js';
+import { getApplication } from '../globals.js';
+import { Timer } from '../Application.js';
 
 
 /**
@@ -27,6 +29,7 @@ export default class Entity {
         this.types = {};
         this.id = id++;
 
+        getApplication().EntityManager.addEntity(this);
     };
 
     public Update?(){};
@@ -35,7 +38,6 @@ export default class Entity {
         if(C.id){
             if(!this.types[C.id]){
                 C.entity = this;
-                C.Initialize();
                 this.components.push(C);
             }
             else {
@@ -72,4 +74,28 @@ export default class Entity {
         console.log(this.id, "Does not have", C, "!");
         return false;
     };
-};
+
+    public Initialize(){
+        this.sort();
+
+        this.components.forEach(component => {
+            component.Initialize();
+        });
+    };
+
+    private sort(){
+        let timer = new Timer("Entity Sort");
+        let c = 0;
+        let newArray = new Array();
+        for(let i = 0; i < 3; i++){
+            this.components.forEach((component) =>{
+                if(component.weight === i){
+                    newArray[c] = component;
+                    c++;
+                };
+            });
+        };
+        this.components = newArray;
+        timer.stop();
+    };
+};  

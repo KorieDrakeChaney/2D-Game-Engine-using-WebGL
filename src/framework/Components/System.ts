@@ -1,4 +1,4 @@
-import Component from "./Component.js";
+import { getApplication } from "../globals.js";
 
 
 export default class System {
@@ -9,4 +9,7 @@ export default class System {
     };
 
     public Update?(){};
+
+    protected app : any = getApplication();
+
 }; 
