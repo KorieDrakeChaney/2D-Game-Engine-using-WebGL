@@ -52,3 +52,8 @@ export const VERTEX_POSITION : number = 0;
 export const COLOR : number = 1; 
 export const TEXTURE_COORD : number = 2;
 export const TEXTURE_INDEX : number = 3;
+
+
+
+export const entityTransform = "Transform";
+export const entitySprite = "Sprite";

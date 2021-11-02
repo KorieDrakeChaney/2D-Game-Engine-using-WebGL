@@ -1,7 +1,7 @@
 var id = 0;
 var Entity = (function () {
     function Entity() {
-        this.components = {};
+        this.components = new Array();
         this.types = {};
         this.id = id++;
     }
@@ -13,6 +13,7 @@ var Entity = (function () {
             if (!this.types[C.id]) {
                 C.entity = this;
                 C.Initialize();
+                this.components.push(C);
             }
             else {
                 console.error("Already has component : ", typeof C);
@@ -25,7 +26,19 @@ var Entity = (function () {
     };
     ;
     Entity.prototype.findComponent = function (C) {
-        return;
+        var c = null;
+        if (this.hasComponent(C)) {
+            this.components.forEach(function (component) {
+                if (component.id === C) {
+                    c = component;
+                }
+            });
+            return c;
+        }
+        else {
+            console.log(C + " does not exist in entity!");
+        }
+        ;
     };
     ;
     Entity.prototype.hasComponent = function (C) {

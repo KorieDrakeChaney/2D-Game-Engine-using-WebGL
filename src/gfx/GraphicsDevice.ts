@@ -3,29 +3,28 @@ import Application from '../framework/Application.js';
 import {VertexBuffer, IndexBuffer} from './Buffer.js';
 import Shader from "./Shader.js"
 import {getProgram}  from "./Shader.js";
-import { QuadBatch } from './BatchConfig.js';
+import { BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,} from './constants.js';
+import mat4 from '../math/mat4.js';
 
 export default class GraphicsDevice {
 
-    private vbuffers : Array<VertexBuffer> = new Array();
-    private ibuffers : Array<IndexBuffer> = new Array();
-    private shaders : Array<Shader> = new Array();
+    private vbuffers : Array<VertexBuffer> = [];
+
+    private ibuffers : Array<IndexBuffer> = [];
+    private shaders : Array<Shader> = [];
     private texture : Array<any>;
     private gl : any;
     private app : Application;
     private program : any;    
-    private quadBatch : QuadBatch;
 
     constructor(app : Application){
         this.app = app;
         this.gl = this.app.gl;
         this.program = getProgram(this.gl);
-        this.quadBatch = new QuadBatch(this.gl, this);
     };
 
 
     initalize():void {
-        this.quadBatch.flush();
         this.gl.useProgram(this.program);
         this.update();
     };
@@ -34,11 +33,10 @@ export default class GraphicsDevice {
 
 
     update():void {
-
-        for(let i = 0; i < this.vbuffers.length; i++){
-            this.vbuffers[i].bind();
+ 
+        for(let i = 0; i < this.ibuffers.length; i++){
+            this.vbuffers[i].bind()
             this.ibuffers[i].bind();
-
 
             this.vbuffers[i].unbind();
             this.ibuffers[i].unbind();
@@ -60,8 +58,15 @@ export default class GraphicsDevice {
         this.shaders.push(shader);
     };  
 
-    add(vertices : Array<number>):void{
-        this.quadBatch.addQuad(vertices);
-    };  
+
+    setUniformMat4(name : string, matrix : mat4){
+        this.gl.useProgram(this.program);
+        let loc = this.gl.getUniformLocation(this.program, name);
+        if(!loc){
+            console.error("location failed ! ");
+        }
+        this.gl.uniformMatrix4fv(loc, false, matrix.values);
+        this.gl.useProgram(null);
+    };
 
 }

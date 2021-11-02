@@ -2,6 +2,27 @@ import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererManager from "./Components/Renderer/RendererManager.js";
 
+export class Timer{
+    private name : string;
+    private timer : number;
+    constructor(name : string){
+        this.name = name;
+        this.timer = Date.now();
+    };
+
+    stop():void{
+        let elapsedTime = (Date.now() - this.timer)/1000;
+        if(elapsedTime >= 3.0){
+            console.error(`${this.name}: ${(elapsedTime).toFixed(3)} ms`);
+        }
+        else {
+            console.log(`${this.name}: ${(elapsedTime).toFixed(3)} ms`);
+        };
+    };
+}
+
+
+
 export default class Application {
     
     private _app : any = null;
@@ -16,14 +37,18 @@ export default class Application {
     private _autoRender  : boolean = true;
     private _renderNextFrame  : boolean = false;
     
-    
-    private _scripts : Array<object> = new Array();
+    private _FPS : number = 120;
+    private _MPF : number = 1000 / this._FPS;
+    private _lagTime: number = 0;
+    private scene : any = null;
     
     
     
     
     private _GraphicsDevice : GraphicsDevice = null;
     private _RendererManager : RendererManager = new RendererManager();
+
+    private _loopIsRunning : boolean = false;
     
     constructor(app : any){
         this._app = app;
@@ -52,14 +77,9 @@ export default class Application {
 
     };
 
-    addScript(script : any){
-        if(script.Update){
-            this._scripts.push(script);
-        }
-        else {
-            console.error("Not valid script");
-        };
-    };
+    addScene(game : any){
+        this.scene = game;
+    };  
 
     draw = function():void{
         this._GraphicsDevice.initalize();
@@ -83,11 +103,35 @@ export default class Application {
         if(needResize){
             this._app.width = width;
             this._app.height = height;
+            this._gl.viewport(0, 0, width, height);
         };
     };
     
 
+    public _update(){
 
+        if(this._loopIsRunning){
+            requestAnimationFrame( this._update.bind(this) );
+
+
+            let currentTime = Date.now();
+            let elapsedTime = currentTime - this._time;
+            this._time = currentTime;
+            this._lagTime += elapsedTime;
+
+
+            this.resizeCanvasToDisplaySize();
+
+            while(this._lagTime >= this._MPF && this._loopIsRunning){
+                this.scene.Update();
+                this._lagTime -= this._MPF;
+            }
+            
+            this.scene.Render();
+        
+
+        };
+    }; 
 
     get gl(){
         return this._gl;
@@ -102,11 +146,11 @@ export default class Application {
     }
 
     start = function(){
-        this._RendererManager.Update();
-        
-        this._scripts.forEach(script => {
-            script.Update();
-        });
+        this._loopIsRunning = true;
+        this._time = Date.now();
+        this._RendererManager.Initialize();
+
+        requestAnimationFrame( this._update.bind(this) );
 
     };
 

@@ -1,6 +1,26 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererManager from "./Components/Renderer/RendererManager.js";
+var Timer = (function () {
+    function Timer(name) {
+        this.name = name;
+        this.timer = Date.now();
+    }
+    ;
+    Timer.prototype.stop = function () {
+        var elapsedTime = (Date.now() - this.timer) / 1000;
+        if (elapsedTime >= 3.0) {
+            console.error(this.name + ": " + (elapsedTime).toFixed(3) + " ms");
+        }
+        else {
+            console.log(this.name + ": " + (elapsedTime).toFixed(3) + " ms");
+        }
+        ;
+    };
+    ;
+    return Timer;
+}());
+export { Timer };
 var Application = (function () {
     function Application(app) {
         this._app = null;
@@ -11,9 +31,13 @@ var Application = (function () {
         this._frame = 0;
         this._autoRender = true;
         this._renderNextFrame = false;
-        this._scripts = new Array();
+        this._FPS = 120;
+        this._MPF = 1000 / this._FPS;
+        this._lagTime = 0;
+        this.scene = null;
         this._GraphicsDevice = null;
         this._RendererManager = new RendererManager();
+        this._loopIsRunning = false;
         this.initialize = function () {
             this._gl = this._app.getContext('webgl2') || this._app.getContext('experimental-webgl2');
             this._GraphicsDevice = new GraphicsDevice(this);
@@ -48,25 +72,37 @@ var Application = (function () {
             if (needResize) {
                 this._app.width = width;
                 this._app.height = height;
+                this._gl.viewport(0, 0, width, height);
             }
             ;
         };
         this.start = function () {
-            this._RendererManager.Update();
-            this._scripts.forEach(function (script) {
-                script.Update();
-            });
+            this._loopIsRunning = true;
+            this._time = Date.now();
+            this._RendererManager.Initialize();
+            requestAnimationFrame(this._update.bind(this));
         };
         this._app = app;
         this.initialize();
     }
     ;
-    Application.prototype.addScript = function (script) {
-        if (script.Update) {
-            this._scripts.push(script);
-        }
-        else {
-            console.error("Not valid script");
+    Application.prototype.addScene = function (game) {
+        this.scene = game;
+    };
+    ;
+    Application.prototype._update = function () {
+        if (this._loopIsRunning) {
+            requestAnimationFrame(this._update.bind(this));
+            var currentTime = Date.now();
+            var elapsedTime = currentTime - this._time;
+            this._time = currentTime;
+            this._lagTime += elapsedTime;
+            this.resizeCanvasToDisplaySize();
+            while (this._lagTime >= this._MPF && this._loopIsRunning) {
+                this.scene.Update();
+                this._lagTime -= this._MPF;
+            }
+            this.scene.Render();
         }
         ;
     };

@@ -10,18 +10,17 @@ import Component from '../Component.js';
 
 export default class Transform extends Component {
 
-    public position : vec2;
+    public translation : vec2;
     public scale : vec2;
     public rotation : number;
 
     public id : string = "Transform";
 
-    constructor(position : vec2 = new vec2([0, 0]), scale : vec2 = new vec2([1, 1]), rotation : number = 0){
+    constructor(translation : vec2 = new vec2([0, 0]), scale : vec2 = new vec2([1, 1]), rotation : number = 0){
         super();
-        this.position = position;
+        this.translation = translation;
         this.scale = scale;
         this.rotation = rotation;
-        
     };
     
     public Initialize():void{

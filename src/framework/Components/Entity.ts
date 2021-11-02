@@ -15,7 +15,7 @@ let id = 0;
 
 export default class Entity {
 
-    public components : any;
+    public components : Array<Component>;
     public types : any;
 
     public id : number;
@@ -23,7 +23,7 @@ export default class Entity {
 
     constructor(){
 
-        this.components = {};
+        this.components = new Array();
         this.types = {};
         this.id = id++;
 
@@ -36,6 +36,7 @@ export default class Entity {
             if(!this.types[C.id]){
                 C.entity = this;
                 C.Initialize();
+                this.components.push(C);
             }
             else {
                 console.error("Already has component : ", typeof C);
@@ -48,8 +49,20 @@ export default class Entity {
     }; 
  
     
-    public findComponent(C : Component):Component{
-        return;
+    public findComponent(C : string):Component{
+        let c = null;
+        if(this.hasComponent(C)){
+            this.components.forEach(component => {
+                if (component.id === C){
+                    c = component;
+                }
+            });
+            return c;
+        }
+        else {
+            console.log(`${C} does not exist in entity!`);
+        };
+  
     };
 
     public hasComponent(C : string):boolean{
