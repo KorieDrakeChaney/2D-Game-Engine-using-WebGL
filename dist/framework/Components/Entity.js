@@ -1,5 +1,4 @@
 import { getApplication } from '../globals.js';
-import { Timer } from '../Application.js';
 var id = 0;
 var Entity = (function () {
     function Entity() {
@@ -18,12 +17,12 @@ var Entity = (function () {
                 this.components.push(C);
             }
             else {
-                console.error("Already has component : ", typeof C);
+                console.warn("Already has component : ", typeof C);
             }
             ;
         }
         else {
-            console.error("invalid Component");
+            console.warn("invalid Component");
         }
     };
     ;
@@ -38,7 +37,7 @@ var Entity = (function () {
             return c;
         }
         else {
-            console.log(C + " does not exist in entity!");
+            console.warn(C + " does not exist in entity!");
         }
         ;
     };
@@ -48,37 +47,14 @@ var Entity = (function () {
             return true;
         }
         ;
-        console.log(this.id, "Does not have", C, "!");
+        console.warn(this.id + ", Does not have " + C + " !");
         return false;
     };
     ;
     Entity.prototype.Initialize = function () {
-        this.sort();
         this.components.forEach(function (component) {
             component.Initialize();
         });
-    };
-    ;
-    Entity.prototype.sort = function () {
-        var timer = new Timer("Entity Sort");
-        var c = 0;
-        var newArray = new Array();
-        var _loop_1 = function (i) {
-            this_1.components.forEach(function (component) {
-                if (component.weight === i) {
-                    newArray[c] = component;
-                    c++;
-                }
-                ;
-            });
-        };
-        var this_1 = this;
-        for (var i = 0; i < 3; i++) {
-            _loop_1(i);
-        }
-        ;
-        this.components = newArray;
-        timer.stop();
     };
     ;
     return Entity;

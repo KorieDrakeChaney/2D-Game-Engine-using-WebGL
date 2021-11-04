@@ -21,6 +21,8 @@ export default class EntityManager{
     };
 
 
+    
+
     Initialize():void{
         this.Entities.forEach(Entity => {
             Entity.Initialize();

@@ -41,11 +41,11 @@ export default class Entity {
                 this.components.push(C);
             }
             else {
-                console.error("Already has component : ", typeof C);
+                console.warn("Already has component : ", typeof C);
             };
         }
         else { 
-            console.error("invalid Component");
+            console.warn("invalid Component");
         }
 
     }; 
@@ -62,7 +62,7 @@ export default class Entity {
             return c;
         }
         else {
-            console.log(`${C} does not exist in entity!`);
+            console.warn(`${C} does not exist in entity!`);
         };
   
     };
@@ -71,31 +71,15 @@ export default class Entity {
         if(this.types[C]){
             return true;
         };
-        console.log(this.id, "Does not have", C, "!");
+        console.warn(`${this.id}, Does not have ${C} !`);
         return false;
     };
 
     public Initialize(){
-        this.sort();
-
         this.components.forEach(component => {
             component.Initialize();
         });
     };
 
-    private sort(){
-        let timer = new Timer("Entity Sort");
-        let c = 0;
-        let newArray = new Array();
-        for(let i = 0; i < 3; i++){
-            this.components.forEach((component) =>{
-                if(component.weight === i){
-                    newArray[c] = component;
-                    c++;
-                };
-            });
-        };
-        this.components = newArray;
-        timer.stop();
-    };
+
 };  

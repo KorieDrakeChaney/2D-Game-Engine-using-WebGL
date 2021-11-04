@@ -17,12 +17,12 @@ import {
 
 
 
-const maxQuadCount : number = 1250;
+const maxQuadCount : number = 2500;
 const maxVerticeCount : number = maxQuadCount * 4 *  (3 + 4 + 2 + 1);
 const maxIndexCount : number = maxQuadCount * 6;
 
 
-class Vertex {
+export class Vertex {
     public Position : vec3;
     public Color : vec4;
     public TexCoord : vec2;
@@ -30,6 +30,10 @@ class Vertex {
 }
 
 
+
+var idCheck = 0; // keeps track of new ids
+
+var bufferID = 0;
 
 class RenderData { 
 
@@ -43,13 +47,16 @@ class RenderData {
 
     public MaxPtr : number = 0;
 
-    public ID : number = 0;
-    
+    public ID : number = 0; // id of 
+
+    public bufferID : number; 
+
     constructor(){
         this.Vertices = new Float32Array(maxVerticeCount);
         this.Indices = new Uint16Array(maxIndexCount);
         this.QuadBuffer = new Array();
         this.QuadBufferPtr = 0;
+        this.bufferID = bufferID++;
     };
 
 
@@ -65,129 +72,141 @@ let QuadData = {
     texIndex : 0
 }
 
-export default class Renderer2D { 
 
-    static DrawQuad(quad : any = QuadData):void{
+export function DrawQuad(quad : any = QuadData):void{
 
-        if(data.IndexCount >= maxIndexCount){
-            Renderer2D.EndBatch();
-            Renderer2D.Flush();
-            Renderer2D.BeginBatch();
-        };
-
-
-        if(!quad.translation){
-            quad.translation = QuadData.position;
-        };
-        let position = quad.translation.add(QuadData.position);
-
-        if(!quad.scale){
-            quad.scale = QuadData.size;
-        };
-        let size = quad.scale.multiply(QuadData.size);
-
-        if(!quad.rotation){
-            quad.rotation = 0;
-        };
-        let rotation = quad.rotation;
-
-        if(!quad.color){
-            quad.color = QuadData.color;
-        };
-        let color = quad.color;
-
-        if(!quad.texIndex){
-            quad.texIndex = QuadData.texIndex;
-        };
-        let texIndex = quad.texIndex;
-        // bottom left
-        let id = null;
-        data.QuadBufferPtr = 4 * data.ID;
-
-        if(data.QuadBuffer[data.QuadBufferPtr] == null){
-            id = data.ID++;
-            data.IndexCount+=6;
-        };
-        
-        data.QuadBufferPtr = 4 * id;
-
-
-        
-        data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
-
-        data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                       ((position.x - size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
-                                                       ((position.x - size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
-                                                       0]);
-        data.QuadBuffer[data.QuadBufferPtr].Color = color;
-        data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 1.0])
-        data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
-
-        data.QuadBufferPtr++;
-        // top left
-
-        data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
-
-        data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                    ((position.x - size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
-                                                    ((position.x - size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
-                                                    0]);
-        data.QuadBuffer[data.QuadBufferPtr].Color = color;
-        data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 1.0])
-        data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
-
-        data.QuadBufferPtr++;
-        // top right
-
-        data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
-
-        data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                    ((position.x + size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
-                                                    ((position.x + size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
-                                                    0]);
-        data.QuadBuffer[data.QuadBufferPtr].Color = color;
-        data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 0.0])
-        data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
-
-        data.QuadBufferPtr++;
-        // bottom right
-
-        data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
-
-        data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                    ((position.x + size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
-                                                    ((position.x + size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
-                                                    0]);
-        data.QuadBuffer[data.QuadBufferPtr].Color = color;
-        data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 0.0])
-        data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
-
-        data.QuadBufferPtr++;
-        
-        if (data.MaxPtr < data.QuadBufferPtr){
-            data.MaxPtr = data.QuadBufferPtr;
-        };
-
+    if(data.IndexCount >= maxIndexCount){
+        EndBatch();
+        Flush();
+        BeginBatch();
     };
 
-    static BeginBatch():void{
+    if(!quad.translation){
+        quad.translation = QuadData.position;
+    };
+    let position = quad.translation.add(QuadData.position);
+
+    if(!quad.scale){
+        quad.scale = QuadData.size;
+    };
+    let size = quad.scale.multiply(QuadData.size);
+
+    if(!quad.rotation){
+        quad.rotation = 0;
+    };
+    let rotation = quad.rotation;
+
+    if(!quad.color){
+        quad.color = QuadData.color;
+    };
+    let color = quad.color;
+
+    if(!quad.texIndex){
+        quad.texIndex = QuadData.texIndex;
+    };
+    let texIndex = quad.texIndex;
+    // bottom left
+    if(quad.id){
+        data.ID = quad.id;
+
+    }
+    else if(quad.id == null) {
+        quad.id = data.ID++;
+    };
+
+    let id = quad.id;
+
+    while(id >= maxQuadCount){
+        id -= maxQuadCount;
+    };
+
+    data.QuadBufferPtr = 4 * id;
+
+    if(data.QuadBuffer[data.QuadBufferPtr] == null){
+        data.IndexCount+=6;
+    };
+    
+    
+    data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
+                                                    ((position.x - size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
+                                                    ((position.x - size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
+                                                    0]);
+    data.QuadBuffer[data.QuadBufferPtr].Color = color;
+    data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 1.0])
+    data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
+
+    data.QuadBufferPtr++;
+    // top left
+
+    data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
+                                                ((position.x - size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
+                                                ((position.x - size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
+                                                0]);
+    data.QuadBuffer[data.QuadBufferPtr].Color = color;
+    data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 1.0])
+    data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
+
+    data.QuadBufferPtr++;
+    // top right
+
+    data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
+                                                ((position.x + size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
+                                                ((position.x + size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
+                                                0]);
+    data.QuadBuffer[data.QuadBufferPtr].Color = color;
+    data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 0.0])
+    data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
+
+    data.QuadBufferPtr++;
+    // bottom right
+
+    data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
+                                                ((position.x + size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
+                                                ((position.x + size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
+                                                0]);
+    data.QuadBuffer[data.QuadBufferPtr].Color = color;
+    data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 0.0])
+    data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
+
+    data.QuadBufferPtr++;
+    
+    if (data.MaxPtr < data.QuadBufferPtr){
+        data.MaxPtr = data.QuadBufferPtr;
+    };
+
+
+};
+
+export function BeginBatch():void{
         data = new RenderData();
     };
 
-    static EndBatch():void{
-        Renderer2D.indiceInitialize();
-        Renderer2D.vertexInitialize();
+export function EndBatch():void{
+        indiceInitialize();
+        vertexInitialize();
 
     };
 
-    static Flush():void{
-        new VertexBuffer(data.Vertices, BUFFER_DYNAMIC);
-        new IndexBuffer(data.Indices);
+export function Flush():void
+    {
+        if(idCheck == data.bufferID){
+            new VertexBuffer(data.Vertices, data.bufferID, BUFFER_DYNAMIC);
+            new IndexBuffer(data.Indices, data.bufferID);
+            idCheck++;
+        }
     };
 
 
 
-    static vertexInitialize():void{
+export function vertexInitialize():void{
         let count = 10;
         for(let i = 0; i < data.MaxPtr; i++){
             
@@ -208,7 +227,7 @@ export default class Renderer2D {
         };
     }
 
-    static indiceInitialize():void{
+export function indiceInitialize():void{
         let offset = 0;
         for(let i = 0; i < maxIndexCount; i+=6){
             data.Indices[0 + i] = 0 + offset; // 0
@@ -220,7 +239,6 @@ export default class Renderer2D {
             offset += 4;
         };
     };
-}
 
 
 

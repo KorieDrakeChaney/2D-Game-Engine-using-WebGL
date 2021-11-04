@@ -44,7 +44,6 @@ export default class GraphicsDevice {
 
 
     update():void {
-
         for(let i = 0; i < this.ibuffers.length; i++){
             this.vbuffers[i].bind()
             this.ibuffers[i].bind();
@@ -62,11 +61,21 @@ export default class GraphicsDevice {
     };
 
     addVBuffer(vBuffer : VertexBuffer):void {
-        this.vbuffers.push(vBuffer);
+        if(!this.vbuffers[vBuffer.id]){
+            this.vbuffers[vBuffer.id] = vBuffer;
+        }
+        else { 
+            vBuffer.delete()
+        };
     };
 
     addIBuffer(iBuffer : IndexBuffer):void{
-        this.ibuffers.push(iBuffer);
+        if(!this.ibuffers[iBuffer.id]){
+            this.ibuffers[iBuffer.id] = iBuffer;
+        }
+        else { 
+            iBuffer.delete()
+        };
     };
 
     addShader(shader : Shader):void{

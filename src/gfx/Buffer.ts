@@ -17,8 +17,6 @@ import { getApplication } from '../framework/globals.js';
      */
 
 
-var id = 0;
-
 export class VertexBuffer { 
 
     private data : ArrayBuffer = null; 
@@ -28,11 +26,13 @@ export class VertexBuffer {
     private usage : number;
     private gl : any;
 
-    constructor(vertices : Float32Array, usage : number = BUFFER_STATIC){
-        this.id = id++;
+    constructor(vertices : Float32Array, id : number = 0, usage : number = BUFFER_STATIC){
+
+        this.id = id;
         this.usage = usage;
         this.storage = vertices;
         this.gl = getApplication().gl;
+
         getApplication().GraphicsDevice.addVBuffer(this);
         let glUsage : any;
 
@@ -81,16 +81,15 @@ export class VertexBuffer {
         this.gl.enableVertexAttribArray(TEXTURE_COORD);
         this.gl.vertexAttribPointer(TEXTURE_INDEX, 1, this.gl.FLOAT, false, 10 * FLOAT, 9 * FLOAT);
         this.gl.enableVertexAttribArray(TEXTURE_INDEX);
-
-        
-
-
     };
 
     unbind():void{
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
     };
 
+    delete():void{
+        this.gl.deleteBuffer(this.data);
+    };
 
 };
 
@@ -110,8 +109,8 @@ export class VertexBuffer {
     private usage : number;
     private gl : any;
 
-    constructor(indices : Uint16Array, usage : number = BUFFER_STATIC){
-        this.id = id++;
+    constructor(indices : Uint16Array, id : number, usage : number = BUFFER_STATIC){
+        this.id = id;
         this.storage = indices;
         this.usage = usage;
         this.gl = getApplication().gl;
@@ -167,4 +166,7 @@ export class VertexBuffer {
     };
 
  
+    delete():void{
+        this.gl.deleteBuffer(this.data);
+    }
 }

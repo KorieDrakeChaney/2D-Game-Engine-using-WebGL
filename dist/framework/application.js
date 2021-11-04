@@ -107,6 +107,7 @@ var Application = (function () {
                 this.scene.Update();
                 this._lagTime -= this._MPF;
             }
+            ;
             this.scene.Render();
             this.draw();
         }

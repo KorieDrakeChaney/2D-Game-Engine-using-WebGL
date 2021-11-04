@@ -2,7 +2,7 @@ import Component from "../Component.js";
 import System from "../System.js";
 import Sprite from "./Sprite.js";
 import Transform from "../Physics/Transform.js";
-import Renderer2D from "../../../gfx/Renderer2D.js"
+import * as Renderer2D from "../../../gfx/Renderer2D.js"
 import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM} from "../../../gfx/constants.js";
 import GraphicsDevice from "../../../gfx/GraphicsDevice.js";
 import { getApplication } from "../../globals.js";
@@ -50,18 +50,17 @@ export default class RendererManager extends System{
     };
 
     Update(){
-
         for(let i = 0; i < this.sprites.length; i++){
             Renderer2D.DrawQuad({
                 color : this.sprites[i].color, 
                 translation : this.transforms[i].translation,
                 rotation : this.transforms[i].rotation,
                 scale : this.transforms[i].scale, 
+                id : this.sprites[i].entity.id
             });
         };
 
         for(let i = 0; i < this.transforms.length;i++){
-
 
 
         };

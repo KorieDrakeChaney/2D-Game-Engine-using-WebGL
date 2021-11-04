@@ -56,8 +56,6 @@ export default class Application {
         this._app = app;
         this.initialize();
 
-
-
         this._GraphicsDevice = new GraphicsDevice(this);
         this._RendererManager = new RendererManager();
         this._EntityManager = new EntityManager();
@@ -135,8 +133,8 @@ export default class Application {
                 this._RendererManager.Update();
                 this.scene.Update();
                 this._lagTime -= this._MPF;
-            }
-            
+            };
+
             this.scene.Render();
             this.draw();
         };
