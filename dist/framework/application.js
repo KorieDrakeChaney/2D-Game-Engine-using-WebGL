@@ -1,7 +1,7 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
-import RendererManager from "./Components/Renderer/RendererManager.js";
-import EntityManager from "./Components/EntityManager.js";
+import RendererSystem from "./Components/Renderer/RendererSystem.js";
+import EntitySystem from "./Components/EntitySystem.js";
 var Timer = (function () {
     function Timer(name) {
         this.name = name;
@@ -37,8 +37,8 @@ var Application = (function () {
         this._lagTime = 0;
         this.scene = null;
         this._GraphicsDevice = null;
-        this._RendererManager = null;
-        this._EntityManager = null;
+        this._RendererSystem = null;
+        this._EntitySystem = null;
         this._loopIsRunning = false;
         this.initialize = function () {
             this._gl = this._app.getContext('webgl2') || this._app.getContext('experimental-webgl2');
@@ -80,14 +80,14 @@ var Application = (function () {
         this.start = function () {
             this._loopIsRunning = true;
             this._time = Date.now();
-            this._EntityManager.Initialize();
+            this._EntitySystem.Ready();
             requestAnimationFrame(this._update.bind(this));
         };
         this._app = app;
         this.initialize();
         this._GraphicsDevice = new GraphicsDevice(this);
-        this._RendererManager = new RendererManager();
-        this._EntityManager = new EntityManager();
+        this._RendererSystem = new RendererSystem();
+        this._EntitySystem = new EntitySystem();
     }
     ;
     Application.prototype.addScene = function (game) {
@@ -103,7 +103,8 @@ var Application = (function () {
             this._lagTime += elapsedTime;
             this.resizeCanvasToDisplaySize();
             while (this._lagTime >= this._MPF && this._loopIsRunning) {
-                this._RendererManager.Update();
+                this._EntitySystem.Update();
+                this._RendererSystem.Update();
                 this.scene.Update();
                 this._lagTime -= this._MPF;
             }
@@ -130,17 +131,17 @@ var Application = (function () {
         configurable: true
     });
     ;
-    Object.defineProperty(Application.prototype, "RendererManager", {
+    Object.defineProperty(Application.prototype, "RendererSystem", {
         get: function () {
-            return this._RendererManager;
+            return this._RendererSystem;
         },
         enumerable: false,
         configurable: true
     });
     ;
-    Object.defineProperty(Application.prototype, "EntityManager", {
+    Object.defineProperty(Application.prototype, "EntitySystem", {
         get: function () {
-            return this._EntityManager;
+            return this._EntitySystem;
         },
         enumerable: false,
         configurable: true

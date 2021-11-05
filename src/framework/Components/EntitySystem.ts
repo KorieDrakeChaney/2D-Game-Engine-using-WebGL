@@ -1,13 +1,14 @@
+import Entity from "./Entity.js";
+import System from "./System.js";
+
 /**
  * @class 
  * @name EntityManager
  * @description Holds all information of entities
  */
 
-import Entity from "./Entity";
 
-
-export default class EntityManager{
+export default class EntitySystem extends System{
 
     private Entities : Array<Entity> = new Array(1000);
 
@@ -20,12 +21,17 @@ export default class EntityManager{
         }
     };
 
-
-    
-
-    Initialize():void{
+    Ready():void{
         this.Entities.forEach(Entity => {
-            Entity.Initialize();
+            Entity.Ready();
         });
     };
+
+    Update():void{
+        this.Entities.forEach(Entity => {
+            Entity.Update();
+        });
+    }
+
+
 };

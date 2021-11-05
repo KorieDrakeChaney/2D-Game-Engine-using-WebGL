@@ -21,35 +21,36 @@ export default class Entity {
     public types : any;
 
     public id : number;
-    
 
-    constructor(){
+    private name : string;
 
+    constructor(name : string = "Entity"){
+        this.name = name;
         this.components = new Array();
         this.types = {};
         this.id = id++;
 
-        getApplication().EntityManager.addEntity(this);
+        getApplication().EntitySystem.addEntity(this);
     };
 
     public Update?(){};
+    public Ready?(){};
 
     public addComponent(C : Component){
         if(C.id){
             if(!this.types[C.id]){
                 C.entity = this;
+                C.Initialize();
                 this.components.push(C);
             }
             else {
-                console.warn("Already has component : ", typeof C);
+                console.warn(`${this.name} already has component : ${C.id}`);
             };
         }
         else { 
             console.warn("invalid Component");
         }
-
     }; 
- 
     
     public findComponent(C : string):Component{
         let c = null;
@@ -62,7 +63,7 @@ export default class Entity {
             return c;
         }
         else {
-            console.warn(`${C} does not exist in entity!`);
+            console.warn(`${C} does not exist in ${this.name}!`);
         };
   
     };
@@ -71,15 +72,10 @@ export default class Entity {
         if(this.types[C]){
             return true;
         };
-        console.warn(`${this.id}, Does not have ${C} !`);
+        console.warn(`${this.name}, Does not have ${C} !`);
         return false;
     };
 
-    public Initialize(){
-        this.components.forEach(component => {
-            component.Initialize();
-        });
-    };
 
 
 };  

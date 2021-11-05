@@ -18,6 +18,6 @@ export default class Sprite extends Component{
     
     public Initialize():void{
         this.entity.types.Sprite = this.id;
-        this.app.RendererManager.addSprite(this);
+        this.app.RendererSystem.addSprite(this);
     };
 }

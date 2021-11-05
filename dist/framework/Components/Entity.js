@@ -1,23 +1,28 @@
 import { getApplication } from '../globals.js';
 var id = 0;
 var Entity = (function () {
-    function Entity() {
+    function Entity(name) {
+        if (name === void 0) { name = "Entity"; }
+        this.name = name;
         this.components = new Array();
         this.types = {};
         this.id = id++;
-        getApplication().EntityManager.addEntity(this);
+        getApplication().EntitySystem.addEntity(this);
     }
     ;
     Entity.prototype.Update = function () { };
+    ;
+    Entity.prototype.Ready = function () { };
     ;
     Entity.prototype.addComponent = function (C) {
         if (C.id) {
             if (!this.types[C.id]) {
                 C.entity = this;
+                C.Initialize();
                 this.components.push(C);
             }
             else {
-                console.warn("Already has component : ", typeof C);
+                console.warn(this.name + " already has component : " + C.id);
             }
             ;
         }
@@ -37,7 +42,7 @@ var Entity = (function () {
             return c;
         }
         else {
-            console.warn(C + " does not exist in entity!");
+            console.warn(C + " does not exist in " + this.name + "!");
         }
         ;
     };
@@ -47,14 +52,8 @@ var Entity = (function () {
             return true;
         }
         ;
-        console.warn(this.id + ", Does not have " + C + " !");
+        console.warn(this.name + ", Does not have " + C + " !");
         return false;
-    };
-    ;
-    Entity.prototype.Initialize = function () {
-        this.components.forEach(function (component) {
-            component.Initialize();
-        });
     };
     ;
     return Entity;

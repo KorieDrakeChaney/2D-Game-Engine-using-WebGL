@@ -1,7 +1,7 @@
 import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
-import RendererManager from "./Components/Renderer/RendererManager.js";
-import EntityManager from "./Components/EntityManager.js";
+import RendererSystem from "./Components/Renderer/RendererSystem.js";
+import EntitySystem from "./Components/EntitySystem.js";
 
 export class Timer{
     private name : string;
@@ -47,8 +47,8 @@ export default class Application {
     
     
     private _GraphicsDevice : GraphicsDevice = null;
-    private _RendererManager : RendererManager = null;
-    private _EntityManager : EntityManager = null;
+    private _RendererSystem : RendererSystem = null;
+    private _EntitySystem : EntitySystem = null;
 
     private _loopIsRunning : boolean = false;
     
@@ -57,8 +57,8 @@ export default class Application {
         this.initialize();
 
         this._GraphicsDevice = new GraphicsDevice(this);
-        this._RendererManager = new RendererManager();
-        this._EntityManager = new EntityManager();
+        this._RendererSystem = new RendererSystem();
+        this._EntitySystem = new EntitySystem();
 
     };
 
@@ -130,7 +130,8 @@ export default class Application {
             this.resizeCanvasToDisplaySize();
 
             while(this._lagTime >= this._MPF && this._loopIsRunning){
-                this._RendererManager.Update();
+                this._EntitySystem.Update();
+                this._RendererSystem.Update();
                 this.scene.Update();
                 this._lagTime -= this._MPF;
             };
@@ -148,19 +149,19 @@ export default class Application {
         return this._GraphicsDevice;
     };
 
-    get RendererManager():RendererManager{
-        return this._RendererManager;
+    get RendererSystem():RendererSystem{
+        return this._RendererSystem;
     }; 
 
-    get EntityManager():EntityManager{
-        return this._EntityManager;
+    get EntitySystem():EntitySystem{
+        return this._EntitySystem;
     };
 
     start = function(){
         this._loopIsRunning = true;
         this._time = Date.now();
 
-        this._EntityManager.Initialize();
+        this._EntitySystem.Ready();
 
         requestAnimationFrame( this._update.bind(this) );
     };

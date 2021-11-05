@@ -19,7 +19,7 @@ import vec3 from "../../../math/vec3.js";
 
 
 
-export default class RendererManager extends System{
+export default class RendererSystem extends System{
 
     private sprites : Array<Sprite> = new Array();
     private transforms : Array<Transform> = new Array();
