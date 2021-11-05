@@ -14,10 +14,7 @@ import {
     BOOL
 } from './constants.js';
 
-
-
-
-const maxQuadCount : number = 2500;
+const maxQuadCount : number = 10000;
 const maxVerticeCount : number = maxQuadCount * 4 *  (3 + 4 + 2 + 1);
 const maxIndexCount : number = maxQuadCount * 6;
 
@@ -47,7 +44,7 @@ class RenderData {
 
     public MaxPtr : number = 0;
 
-    public ID : number = 0; // id of 
+    public ID : number = 0; 
 
     public bufferID : number; 
 
@@ -84,7 +81,7 @@ export function DrawQuad(quad : any = QuadData):void{
     if(!quad.translation){
         quad.translation = QuadData.position;
     };
-    let position = quad.translation.add(QuadData.position);
+    let originalPos = quad.translation.add(QuadData.position);
 
     if(!quad.scale){
         quad.scale = QuadData.size;
@@ -129,10 +126,12 @@ export function DrawQuad(quad : any = QuadData):void{
     
     data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
 
-    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                    ((position.x - size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
-                                                    ((position.x - size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
-                                                    0]);
+    let center = originalPos;
+ 
+    let position = new vec2([center.x + (((originalPos.x - size.x) - center.x) * Math.cos(rotation)) - (((originalPos.y - size.y) - center.y) * Math.sin(rotation)), 
+                             center.y + (((originalPos.x - size.x) - center.x) * Math.sin(rotation)) + (((originalPos.y - size.y) - center.y) * Math.cos(rotation))]);
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([position.x, position.y, 0]);
     data.QuadBuffer[data.QuadBufferPtr].Color = color;
     data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 1.0])
     data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
@@ -142,10 +141,10 @@ export function DrawQuad(quad : any = QuadData):void{
 
     data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
 
-    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                ((position.x - size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
-                                                ((position.x - size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
-                                                0]);
+    position = new vec2([center.x + (((originalPos.x - size.x) - center.x) * Math.cos(rotation)) - (((originalPos.y + size.y) - center.y) * Math.sin(rotation)), 
+        center.y + (((originalPos.x - size.x) - center.x) * Math.sin(rotation)) + (((originalPos.y + size.y) - center.y) * Math.cos(rotation))]);
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([position.x, position.y, 0]);
     data.QuadBuffer[data.QuadBufferPtr].Color = color;
     data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 1.0])
     data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
@@ -155,10 +154,10 @@ export function DrawQuad(quad : any = QuadData):void{
 
     data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
 
-    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                ((position.x + size.x) * Math.cos(rotation)) - ((position.y + size.y) * Math.sin(rotation)), 
-                                                ((position.x + size.x) * Math.sin(rotation)) + ((position.y + size.y) * Math.cos(rotation)), 
-                                                0]);
+    position = new vec2([center.x + (((originalPos.x + size.x) - center.x) * Math.cos(rotation)) - (((originalPos.y + size.y) - center.y) * Math.sin(rotation)), 
+        center.y + (((originalPos.x + size.x) - center.x) * Math.sin(rotation)) + (((originalPos.y + size.y) - center.y) * Math.cos(rotation))]);
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([position.x, position.y, 0]);
     data.QuadBuffer[data.QuadBufferPtr].Color = color;
     data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([1.0, 0.0])
     data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
@@ -168,10 +167,10 @@ export function DrawQuad(quad : any = QuadData):void{
 
     data.QuadBuffer[data.QuadBufferPtr] = new Vertex();
 
-    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([
-                                                ((position.x + size.x) * Math.cos(rotation)) - ((position.y - size.y) * Math.sin(rotation)), 
-                                                ((position.x + size.x) * Math.sin(rotation)) + ((position.y - size.y) * Math.cos(rotation)), 
-                                                0]);
+    position = new vec2([center.x + (((originalPos.x + size.x) - center.x) * Math.cos(rotation)) - (((originalPos.y - size.y) - center.y) * Math.sin(rotation)), 
+        center.y + (((originalPos.x + size.x) - center.x) * Math.sin(rotation)) + (((originalPos.y - size.y) - center.y) * Math.cos(rotation))]);
+
+    data.QuadBuffer[data.QuadBufferPtr].Position = new vec3([position.x, position.y, 0]);
     data.QuadBuffer[data.QuadBufferPtr].Color = color;
     data.QuadBuffer[data.QuadBufferPtr].TexCoord = new vec2([0.0, 0.0])
     data.QuadBuffer[data.QuadBufferPtr].TexIndex = texIndex;
@@ -192,7 +191,6 @@ export function BeginBatch():void{
 export function EndBatch():void{
         indiceInitialize();
         vertexInitialize();
-
     };
 
 export function Flush():void

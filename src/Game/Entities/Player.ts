@@ -10,10 +10,10 @@ export var Player = (function(){
     this.player = new Entity("Player");
 
     this.player.Ready = function(){
-        this.addComponent(new Transform(new vec2([0, 0]), new vec2([0.5, 0.5])));
+        this.addComponent(new Transform(new vec2([Math.random() * 2 - 1, Math.random() * 2 - 1]), new vec2([0.025, 0.025])));
         this.addComponent(new Sprite());
         let sprite = this.findComponent("Sprite");
-        sprite.color = new vec4([1, 0.1, 0.4, 1]);
+        sprite.color = new vec4([Math.random(), Math.random(), Math.random(), 1]);
     };
     
     this.player.Update = function(){

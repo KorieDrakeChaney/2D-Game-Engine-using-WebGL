@@ -22,6 +22,7 @@ export default class EntitySystem extends System{
     };
 
     Ready():void{
+        console.log(this.Entities.length);
         this.Entities.forEach(Entity => {
             Entity.Ready();
         });

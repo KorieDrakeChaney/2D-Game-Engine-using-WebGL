@@ -6,7 +6,9 @@ import Game from './Game/Game.js';
 
 let main = (function(){
     new Application(document.getElementById("canvas-webgl"));
-    new Player();
+    for(let i = 0; i < 1000; i++){
+        new Player();
+    };
     new Game();
 
 }());    

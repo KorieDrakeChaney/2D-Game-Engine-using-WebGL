@@ -132,7 +132,6 @@ export default class Application {
             while(this._lagTime >= this._MPF && this._loopIsRunning){
                 this._EntitySystem.Update();
                 this._RendererSystem.Update();
-                this.scene.Update();
                 this._lagTime -= this._MPF;
             };
 
