@@ -1,6 +1,8 @@
 import * as Renderer2D from '../gfx/Renderer2D.js';
 import { Timer } from '../framework/Application.js';
 import { getApplication } from '../framework/globals.js';
+import {Player} from '../Game/Entities/Player.js'
+
 
 export default function Game(){
     this.App = getApplication();
@@ -8,6 +10,13 @@ export default function Game(){
     this.start();
     
 };
+
+
+Game.prototype.Ready = function(){
+    for(let i = 0; i < 1000; i++){
+        new Player();
+    };
+}
 
 Game.prototype.start = function(){
     let timer = new Timer("Start");

@@ -44,6 +44,7 @@ export default class GraphicsDevice {
 
 
     update():void {
+
         for(let i = 0; i < this.ibuffers.length; i++){
             this.vbuffers[i].bind()
             this.ibuffers[i].bind();
@@ -65,7 +66,8 @@ export default class GraphicsDevice {
             this.vbuffers[vBuffer.id] = vBuffer;
         }
         else { 
-            vBuffer.delete()
+            this.vbuffers[vBuffer.id].delete();
+            this.vbuffers[vBuffer.id] = vBuffer;
         };
     };
 
@@ -74,7 +76,8 @@ export default class GraphicsDevice {
             this.ibuffers[iBuffer.id] = iBuffer;
         }
         else { 
-            iBuffer.delete()
+            this.ibuffers[iBuffer.id].delete();
+            this.ibuffers[iBuffer.id] = iBuffer;
         };
     };
 

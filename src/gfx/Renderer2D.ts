@@ -14,7 +14,7 @@ import {
     BOOL
 } from './constants.js';
 
-const maxQuadCount : number = 10000;
+const maxQuadCount : number = 200;
 const maxVerticeCount : number = maxQuadCount * 4 *  (3 + 4 + 2 + 1);
 const maxIndexCount : number = maxQuadCount * 6;
 
@@ -27,10 +27,6 @@ export class Vertex {
 }
 
 
-
-var idCheck = 0; // keeps track of new ids
-
-var bufferID = 0;
 
 class RenderData { 
 
@@ -53,7 +49,7 @@ class RenderData {
         this.Indices = new Uint16Array(maxIndexCount);
         this.QuadBuffer = new Array();
         this.QuadBufferPtr = 0;
-        this.bufferID = bufferID++;
+        this.bufferID = 0;
     };
 
 
@@ -81,28 +77,32 @@ export function DrawQuad(quad : any = QuadData):void{
     if(!quad.translation){
         quad.translation = QuadData.position;
     };
+
     let originalPos = quad.translation.add(QuadData.position);
 
     if(!quad.scale){
         quad.scale = QuadData.size;
     };
+
     let size = quad.scale.multiply(QuadData.size);
 
     if(!quad.rotation){
         quad.rotation = 0;
     };
+
     let rotation = quad.rotation;
 
     if(!quad.color){
         quad.color = QuadData.color;
     };
+
     let color = quad.color;
 
     if(!quad.texIndex){
         quad.texIndex = QuadData.texIndex;
     };
     let texIndex = quad.texIndex;
-    // bottom left
+
     if(quad.id){
         data.ID = quad.id;
 
@@ -110,17 +110,24 @@ export function DrawQuad(quad : any = QuadData):void{
     else if(quad.id == null) {
         quad.id = data.ID++;
     };
-
     let id = quad.id;
 
+
+    let i = 0;
     while(id >= maxQuadCount){
         id -= maxQuadCount;
+        i++;
     };
+
+    data.bufferID = i;
+    
+
+
 
     data.QuadBufferPtr = 4 * id;
 
-    if(data.QuadBuffer[data.QuadBufferPtr] == null){
-        data.IndexCount+=6;
+    if(!data.QuadBuffer[data.QuadBufferPtr]){
+        data.IndexCount +=6;
     };
     
     
@@ -195,11 +202,8 @@ export function EndBatch():void{
 
 export function Flush():void
     {
-        if(idCheck == data.bufferID){
-            new VertexBuffer(data.Vertices, data.bufferID, BUFFER_DYNAMIC);
-            new IndexBuffer(data.Indices, data.bufferID);
-            idCheck++;
-        }
+    new VertexBuffer(data.Vertices, data.bufferID, BUFFER_DYNAMIC);
+    new IndexBuffer(data.Indices, data.bufferID);
     };
 
 

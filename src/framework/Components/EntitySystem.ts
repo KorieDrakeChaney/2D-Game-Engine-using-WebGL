@@ -10,7 +10,7 @@ import System from "./System.js";
 
 export default class EntitySystem extends System{
 
-    private Entities : Array<Entity> = new Array(1000);
+    private Entities : Array<Entity> = new Array();
 
     addEntity(E : Entity){
         if(this.Entities[E.id] == null){

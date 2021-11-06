@@ -159,7 +159,7 @@ export default class Application {
     start = function(){
         this._loopIsRunning = true;
         this._time = Date.now();
-
+        this.scene.Ready();
         this._EntitySystem.Ready();
 
         requestAnimationFrame( this._update.bind(this) );

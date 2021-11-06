@@ -85,6 +85,7 @@ export class VertexBuffer {
 
     unbind():void{
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
+        
     };
 
     delete():void{
