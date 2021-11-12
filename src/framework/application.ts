@@ -2,6 +2,7 @@ import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererSystem from "./Components/Renderer/RendererSystem.js";
 import EntitySystem from "./Components/EntitySystem.js";
+import * as Renderer2D from '../gfx/Renderer2D.js'
 
 export class Timer{
     private name : string;
@@ -119,24 +120,24 @@ export default class Application {
 
         if(this._loopIsRunning){
             requestAnimationFrame( this._update.bind(this) );
-
-
+            this.resizeCanvasToDisplaySize();
+            
             let currentTime = Date.now();
             let elapsedTime = currentTime - this._time;
             this._time = currentTime;
             this._lagTime += elapsedTime;
-
-
-            this.resizeCanvasToDisplaySize();
-
+          
             while(this._lagTime >= this._MPF && this._loopIsRunning){
                 this._EntitySystem.Update();
                 this._RendererSystem.Update();
                 this._lagTime -= this._MPF;
             };
+            
+            if(document.hasFocus()){
+                    this.scene.Render();
+                    this.draw();
+            }
 
-            this.scene.Render();
-            this.draw();
         };
     }; 
 
@@ -159,6 +160,7 @@ export default class Application {
     start = function(){
         this._loopIsRunning = true;
         this._time = Date.now();
+        Renderer2D.Init();
         this.scene.Ready();
         this._EntitySystem.Ready();
 

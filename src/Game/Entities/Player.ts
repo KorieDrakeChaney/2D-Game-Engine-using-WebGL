@@ -19,7 +19,6 @@ export var Player = (function(){
     this.player.Update = function(){
         let transform = this.findComponent("Transform");
         transform.rotation = Date.now() / 1000;
-
     };
 
 });

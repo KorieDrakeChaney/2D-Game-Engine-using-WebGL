@@ -14,7 +14,7 @@ import {
     BOOL
 } from './constants.js';
 
-const maxQuadCount : number = 200;
+const maxQuadCount : number = 2500;
 const maxVerticeCount : number = maxQuadCount * 4 *  (3 + 4 + 2 + 1);
 const maxIndexCount : number = maxQuadCount * 6;
 
@@ -31,7 +31,6 @@ export class Vertex {
 class RenderData { 
 
     public Vertices : Float32Array;
-    public Indices : Uint16Array;
     
     public QuadBuffer : Array<Vertex>;
     public QuadBufferPtr : number;
@@ -46,7 +45,6 @@ class RenderData {
 
     constructor(){
         this.Vertices = new Float32Array(maxVerticeCount);
-        this.Indices = new Uint16Array(maxIndexCount);
         this.QuadBuffer = new Array();
         this.QuadBufferPtr = 0;
         this.bufferID = 0;
@@ -191,19 +189,21 @@ export function DrawQuad(quad : any = QuadData):void{
 
 };
 
+
+export function Init():void {
+    new IndexBuffer(indiceInitialize(), data.bufferID);
+};
 export function BeginBatch():void{
         data = new RenderData();
     };
 
 export function EndBatch():void{
-        indiceInitialize();
         vertexInitialize();
     };
 
 export function Flush():void
     {
     new VertexBuffer(data.Vertices, data.bufferID, BUFFER_DYNAMIC);
-    new IndexBuffer(data.Indices, data.bufferID);
     };
 
 
@@ -229,17 +229,19 @@ export function vertexInitialize():void{
         };
     }
 
-export function indiceInitialize():void{
+export function indiceInitialize():Uint16Array{
         let offset = 0;
+        let indices = new Uint16Array(maxIndexCount);
         for(let i = 0; i < maxIndexCount; i+=6){
-            data.Indices[0 + i] = 0 + offset; // 0
-            data.Indices[1 + i] = 1 + offset; // 1
-            data.Indices[2 + i] = 2 + offset; // 2
-            data.Indices[3 + i] = 3 + offset; // 3
-            data.Indices[4 + i] = 2 + offset; // 2 
-            data.Indices[5 + i] = 0 + offset; // 0
+            indices[0 + i] = 0 + offset; // 0
+            indices[1 + i] = 1 + offset; // 1
+            indices[2 + i] = 2 + offset; // 2
+            indices[3 + i] = 3 + offset; // 3
+            indices[4 + i] = 2 + offset; // 2 
+            indices[5 + i] = 0 + offset; // 0
             offset += 4;
         };
+        return indices;
     };
 
 

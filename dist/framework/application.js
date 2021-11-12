@@ -2,6 +2,7 @@ import { setApplication } from "./globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererSystem from "./Components/Renderer/RendererSystem.js";
 import EntitySystem from "./Components/EntitySystem.js";
+import * as Renderer2D from '../gfx/Renderer2D.js';
 var Timer = (function () {
     function Timer(name) {
         this.name = name;
@@ -80,6 +81,7 @@ var Application = (function () {
         this.start = function () {
             this._loopIsRunning = true;
             this._time = Date.now();
+            Renderer2D.Init();
             this.scene.Ready();
             this._EntitySystem.Ready();
             requestAnimationFrame(this._update.bind(this));
@@ -98,19 +100,21 @@ var Application = (function () {
     Application.prototype._update = function () {
         if (this._loopIsRunning) {
             requestAnimationFrame(this._update.bind(this));
+            this.resizeCanvasToDisplaySize();
             var currentTime = Date.now();
             var elapsedTime = currentTime - this._time;
             this._time = currentTime;
             this._lagTime += elapsedTime;
-            this.resizeCanvasToDisplaySize();
             while (this._lagTime >= this._MPF && this._loopIsRunning) {
                 this._EntitySystem.Update();
                 this._RendererSystem.Update();
                 this._lagTime -= this._MPF;
             }
             ;
-            this.scene.Render();
-            this.draw();
+            if (document.hasFocus()) {
+                this.scene.Render();
+                this.draw();
+            }
         }
         ;
     };

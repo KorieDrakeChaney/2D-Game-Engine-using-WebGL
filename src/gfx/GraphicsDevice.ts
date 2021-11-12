@@ -44,14 +44,13 @@ export default class GraphicsDevice {
 
 
     update():void {
-
-        for(let i = 0; i < this.ibuffers.length; i++){
+        for(let i = 0; i < this.vbuffers.length; i++){
             this.vbuffers[i].bind()
-            this.ibuffers[i].bind();
+            this.ibuffers[0].bind();
 
             this.vbuffers[i].unbind();
-            this.ibuffers[i].unbind();
         }
+        this.ibuffers[0].unbind();
 
         this.unbind();
     };
