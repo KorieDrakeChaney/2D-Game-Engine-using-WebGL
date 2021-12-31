@@ -3,9 +3,9 @@ import System from "../System.js";
 import Sprite from "./Sprite.js";
 import Transform from "../Physics/Transform.js";
 import * as Renderer2D from "../../../gfx/Renderer2D.js"
-import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM} from "../../../gfx/constants.js";
+import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM} from "../../../gfx/Constants.js";
 import GraphicsDevice from "../../../gfx/GraphicsDevice.js";
-import { getApplication } from "../../globals.js";
+import { getApplication } from "../../Globals.js";
 import mat4 from "../../../math/mat4.js";
 import vec3 from "../../../math/vec3.js";
 

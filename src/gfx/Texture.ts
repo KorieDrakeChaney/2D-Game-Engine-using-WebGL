@@ -1,5 +1,5 @@
 import TextureManger from "./TextureManager.js";
-import {getApplication} from "../framework/globals.js"
+import {getApplication} from "../Framework/Globals.js"
 /**
  * @class
  * @name Texture

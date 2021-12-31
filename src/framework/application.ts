@@ -1,4 +1,4 @@
-import { setApplication } from "./globals.js";
+import { setApplication } from "./Globals.js";
 import GraphicsDevice from "../gfx/GraphicsDevice.js";
 import RendererSystem from "./Components/Renderer/RendererSystem.js";
 import EntitySystem from "./Components/EntitySystem.js";

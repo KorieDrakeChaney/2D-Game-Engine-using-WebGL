@@ -1,6 +1,6 @@
 import vec2 from '../../math/vec2.js';
 import Entity from './Entity.js';
-import { getApplication } from '../globals.js';
+import { getApplication } from '../Globals.js';
 
 /**
  * @class

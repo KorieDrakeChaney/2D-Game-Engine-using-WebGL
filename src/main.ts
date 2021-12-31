@@ -1,5 +1,5 @@
-import Application from './framework/Application.js';
-import Entity from './framework/Components/Entity.js';
+import Application from './Framework/Application.js';
+import Entity from './Framework/Components/Entity.js';
 import Game from './Game/Game.js';
 
 

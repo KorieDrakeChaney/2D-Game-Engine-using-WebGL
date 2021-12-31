@@ -5,9 +5,9 @@ import {BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,
         MAT3, MAT4, 
         BOOL,
     
-        VERTEX_POSITION, COLOR, TEXTURE_COORD, TEXTURE_INDEX} from './constants.js';
+        VERTEX_POSITION, COLOR, TEXTURE_COORD, TEXTURE_INDEX} from './Constants.js';
 import GraphicsDevice from './GraphicsDevice.js';
-import { getApplication } from '../framework/globals.js';
+import { getApplication } from '../Framework/Globals.js';
 
 
     /**

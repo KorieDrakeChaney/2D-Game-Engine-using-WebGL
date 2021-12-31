@@ -1,6 +1,6 @@
-import Entity from "../../framework/Components/Entity.js";
-import Sprite from "../../framework/Components/Renderer/Sprite.js";
-import Transform from "../../framework/Components/Physics/Transform.js";
+import Entity from "../../Framework/Components/Entity.js";
+import Sprite from "../../Framework/Components/Renderer/Sprite.js";
+import Transform from "../../Framework/Components/Physics/Transform.js";
 import vec2 from '../../math/vec2.js'
 import vec4 from '../../math/vec4.js'
 

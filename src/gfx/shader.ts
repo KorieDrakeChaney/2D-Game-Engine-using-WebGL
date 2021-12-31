@@ -1,4 +1,4 @@
-import { getApplication } from '../framework/globals.js';
+import { getApplication } from '../Framework/Globals.js';
 import GraphicsDevice from './GraphicsDevice.js';
 
 /**
@@ -17,7 +17,7 @@ import GraphicsDevice from './GraphicsDevice.js';
  */
 
 
-export default class Shader { 
+export class Shader { 
 
     public attributes : Array<any>;
     public uniforms : Array<any>;

@@ -2,8 +2,7 @@ import Component from './Component.js';
 import * as Renderer2D from "../../gfx/Renderer2D.js";
 import vec2 from '../../math/vec2.js';
 import vec4 from '../../math/vec4.js';
-import { getApplication } from '../globals.js';
-import { Timer } from '../Application.js';
+import { getApplication } from '../Globals.js';
 
 
 /**

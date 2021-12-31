@@ -1,7 +1,7 @@
 import { VertexBuffer, IndexBuffer } from "./Buffer.js";
 import GraphicsDevice from "./GraphicsDevice.js";
 import Texture from "./Texture.js";
-import { getApplication } from '../framework/globals.js';
+import { getApplication } from '../Framework/Globals.js';
 import mat4 from '../math/mat4.js';
 import vec2 from '../math/vec2.js';
 import vec3 from '../math/vec3.js';
@@ -12,7 +12,7 @@ import {
     INT, INT2, INT3, INT4, 
     MAT3, MAT4, 
     BOOL
-} from './constants.js';
+} from './Constants.js';
 
 const maxQuadCount : number = 2500;
 const maxVerticeCount : number = maxQuadCount * 4 *  (3 + 4 + 2 + 1);

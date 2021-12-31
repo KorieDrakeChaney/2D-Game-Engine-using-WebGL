@@ -1,4 +1,4 @@
-import { getApplication } from "../globals.js";
+import { getApplication } from "../Globals.js";
 
 
 export default class System {

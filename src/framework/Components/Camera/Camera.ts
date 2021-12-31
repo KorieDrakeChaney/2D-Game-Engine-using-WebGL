@@ -1,5 +1,5 @@
 import mat4 from '../../../math/mat4.js';
-import {getApplication} from '../../globals.js';
+import {getApplication} from '../../Globals.js';
 import Component from '../Component.js';
 import vec3 from '../../../math/vec3.js';
 

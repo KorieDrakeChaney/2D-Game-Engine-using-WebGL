@@ -1,7 +1,7 @@
 import * as Renderer2D from '../gfx/Renderer2D.js';
-import { Timer } from '../framework/Application.js';
-import { getApplication } from '../framework/globals.js';
-import {Player} from '../Game/Entities/Player.js'
+import { Timer } from '../Framework/Application.js';
+import { getApplication } from '../Framework/Globals.js';
+import {Player} from './Entities/Player.js'
 
 
 export default function Game(){

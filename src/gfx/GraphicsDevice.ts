@@ -1,9 +1,8 @@
-import { getApplication } from '../framework/globals.js';
-import Application from '../framework/Application.js';
+import { getApplication } from '../Framework/Globals.js';
+import Application from '../Framework/Application.js';
 import {VertexBuffer, IndexBuffer} from './Buffer.js';
-import Shader from "./Shader.js"
-import {getProgram}  from "./Shader.js";
-import { BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,} from './constants.js';
+import {getProgram, Shader}  from "./Shader.js";
+import { BUFFER_DYNAMIC, BUFFER_GPUDYNAMIC, BUFFER_STATIC, BUFFER_STREAM,} from './Constants';
 import mat4 from '../math/mat4.js';
 import vec3 from '../math/vec3.js';
 
